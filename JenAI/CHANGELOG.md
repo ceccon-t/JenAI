@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Consume LLM API with fixed configuration (localhost, port 8080).
+
 ### Changed
 
 ### Deprecated
