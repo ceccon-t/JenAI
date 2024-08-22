@@ -6,6 +6,8 @@ Simple CLI interface to chat with a local LLM.
 
 The project is under development, this Readme will be updated as more features are added.
 
+![Short conversation about Open Source and haiku creation between user and assistant](https://raw.githubusercontent.com/ceccon-t/JenAI/main/images/JenAI_v1-0-0_sc0.png "Short conversation about Open Source and haiku creation between user and assistant")
+
 ## How to use
 
 Just enter your message when prompted and press Enter to send it.
