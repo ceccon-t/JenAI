@@ -17,6 +17,12 @@ public class CLISession {
     private Chat chat;
     private Scanner sc = new Scanner(System.in);
 
+    private LLMClient llmClient;
+
+    public CLISession(LLMClient llmClient) {
+        this.llmClient = llmClient;
+    }
+
     public void start() throws IOException {
         printInstructions();
         chat = new Chat();
@@ -42,8 +48,7 @@ public class CLISession {
             );
 
             // Bot turn
-            response = LLMClient.sendPrompt(
-                    "http://localhost:8080/v1/chat/completions",
+            response = llmClient.send(
                     PromptDTO.forChat(chat)
             );
 

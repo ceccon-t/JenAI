@@ -13,7 +13,14 @@ import java.net.URL;
 
 public class LLMClient {
 
-    public static ResponseDTO sendPrompt(String urlString, PromptDTO promptDTO) throws IOException {
+    private APIConfig config;
+
+    public LLMClient(APIConfig config) {
+        this.config = config;
+    }
+
+    public ResponseDTO send(PromptDTO promptDTO) throws IOException {
+        String urlString = config.getFullUrl();
         ObjectMapper mapper = new ObjectMapper();
 
         URL url = new URL(urlString);
@@ -47,4 +54,5 @@ public class LLMClient {
 
         return mapper.readValue(rawResponse, ResponseDTO.class);
     }
+
 }
