@@ -20,6 +20,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 
+## [1.1.0] - 2024-08-22
+
+### Added
+
+- Command line parameter to choose port on which to reach LLM API
+
+
 ## [1.0.0] - 2024-08-19
 
 ### Added
