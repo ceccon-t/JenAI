@@ -20,6 +20,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 
+## [1.1.1] - 2024-08-26
+
+### Fixed
+
+- Removed debugging message when starting with custom port
+- Sanitize tilde-accented vowels and dash look-alike to avoid crash
+
+### Security
+
+- Upgraded version of jackson due to dependabot pointing out vulnerabilities in the previous one
+
+
 ## [1.1.0] - 2024-08-22
 
 ### Added
@@ -31,8 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial release.
-- Consume LLM API with fixed configuration (localhost, port 8080).
-- Chat between user and JenAI assistant.
-- Display token usage metrics after each response.
+- Initial release
+- Consume LLM API with fixed configuration (localhost, port 8080)
+- Chat between user and JenAI assistant
+- Display token usage metrics after each response
 
