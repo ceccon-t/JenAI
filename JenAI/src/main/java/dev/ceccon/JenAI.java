@@ -11,12 +11,10 @@ public class JenAI {
     public static void main(String[] args) throws IOException {
 
         APIConfig config = new APIConfig();
-        Integer port;
 
         if (args.length > 0 && args[0].equals("-p")) {
             try {
-                port = Integer.parseInt(args[1]);
-                System.out.println("Using port " + port);
+                Integer port = Integer.parseInt(args[1]);
                 config.setPort(port.toString());
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 System.out.println("Could not parse port parameter. \nUsage: $ java -jar JenAI.jar -p <port_number>");
