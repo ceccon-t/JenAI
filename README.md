@@ -1,10 +1,10 @@
 # JenAI
 
+![Build status](https://github.com/ceccon-t/JenAI/actions/workflows/main-workflow.yml/badge.svg "Build status")
+
 ## Description
 
 Simple CLI interface to chat with a local LLM.
-
-The project is under development, this Readme will be updated as more features are added.
 
 ![Short conversation about Open Source and haiku creation between user and assistant](https://raw.githubusercontent.com/ceccon-t/JenAI/main/images/JenAI_v1-0-0_sc0.png "Short conversation about Open Source and haiku creation between user and assistant")
 
@@ -42,5 +42,5 @@ This is a simple Maven project, so the easiest way to build it is running `mvn c
 
 ## More info
 
-Coming soon.
+To get a short intro to how the code is organized, you can check `architecture.md`.
 
