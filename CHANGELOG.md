@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Parsing response from LLM server just ignores unknown fields instead of crashing
+
 ### Security
 
 
