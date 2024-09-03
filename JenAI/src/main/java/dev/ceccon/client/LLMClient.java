@@ -21,6 +21,7 @@ public class LLMClient {
 
     public ResponseDTO send(PromptDTO promptDTO) throws IOException {
         String urlString = config.getFullUrl();
+        promptDTO.setModel(config.getModel());
         ObjectMapper mapper = new ObjectMapper();
 
         URL url = new URL(urlString);

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Command line parameter to choose model to be used in conversation
+- Support to ollama as a backend server, due to set of changes implemented
+
 ### Changed
 
 ### Deprecated

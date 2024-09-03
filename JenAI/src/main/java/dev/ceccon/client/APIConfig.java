@@ -7,8 +7,18 @@ public class APIConfig {
     private String port =  "8080";
     private String endpoint = "v1/chat/completions";
 
+    private String model = "";
+
     public void setPort(String port) {
         this.port = port;
+    }
+
+    public String getModel() {
+        return this.model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getFullUrl() {

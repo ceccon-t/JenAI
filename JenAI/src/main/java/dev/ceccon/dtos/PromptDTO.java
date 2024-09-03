@@ -29,6 +29,10 @@ public class PromptDTO {
         return model;
     }
 
+    public void setModel(String model) {
+        this.model = model;
+    }
+
     public List<MessageDTO> getMessages() {
         return messages;
     }
