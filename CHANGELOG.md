@@ -9,9 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Command line parameter to choose model to be used in conversation
-- Support to ollama as a backend server, due to set of changes implemented
-
 ### Changed
 
 ### Deprecated
@@ -20,9 +17,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Parsing response from LLM server just ignores unknown fields instead of crashing
-
 ### Security
+
+
+## [1.2.0] - 2024-09-02
+
+### Added
+
+- Command line parameter to choose model to be used in conversation
+- Support to ollama as a backend server, due to set of changes implemented
+
+### Fixed
+
+- Parsing response from LLM server just ignores unknown fields instead of crashing
 
 
 ## [1.1.1] - 2024-08-26
