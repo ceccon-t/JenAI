@@ -36,6 +36,12 @@ Example using a custom port (8888, in this case):
 
 If building the project with Maven, instead of `JenAI.jar` be sure to use the path to the generated jar, which will be in the `target` directory and have the version as a suffix.
 
+### Run with ollama
+
+If you are using ollama for the LLM server, you will have to at a minimum pass the name of the model you want to chat with when starting the application by using the `-m <model_name>` option. You will probably also want to use ollama's default port, 11434. Here is an example of how to chat with llama3.1 using ollama (check ollama's documentation for other model options):
+
+`$ java -jar JenAI.jar -p 11434 -m llama3.1`
+
 ## How to build the project
 
 This is a simple Maven project, so the easiest way to build it is running `mvn clean package` in the JenAI folder (assuming Maven is installed - if not, check its site and install from there). A jar file containing everything the application needs to run will be created at `JenAI/target/JenAI-<VERSION>.jar`.
