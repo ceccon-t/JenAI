@@ -12,7 +12,7 @@ An important early decision (or "axiom") for this project was to try to avoid as
 
 The main class of the application is also the only one at the root package, `JenAI`. It processes the options used when starting the application, create the appropriate configurations and launches a new `CLISession` with these configurations.
 
-The big picture view is that there are three main responsibilities in the project: keeping the history of a conversation, managing a session with the user and communicating with an LLM server through its API. Each one of these is handled in a particular package.
+The big picture view is that there are three main responsibilities in the project: keeping the history of a conversation, managing a session with the user and communicating with an LLM server through its API. Each one of these is handled in a particular package, while a few other packages handle helper utilities.
 
 The most relevant packages are described below.
 
@@ -31,6 +31,10 @@ Classes under the `client` package handle the interaction with the LLM server th
 ### DTOs
 
 Helper classes to model the objects used by the LLM server API.
+
+### Storage
+
+Helper classes to handle saving conversations.
 
 
 ## CI/CD

@@ -22,23 +22,19 @@ public class CLISession {
     private LLMClient llmClient;
     private LocalFileStorage storage;
 
-    public CLISession(LLMClient llmClient, LocalFileStorage storage) {
+    public CLISession(Chat chat, LLMClient llmClient, LocalFileStorage storage) {
+        this.chat = chat;
         this.llmClient = llmClient;
         this.storage = storage;
     }
 
     public void start() throws IOException {
         printInstructions();
-        chat = new Chat();
+        recapChatHistory();
         String userInput = "";
         String userMessage = "";
         String assistantMessage = "";
         ResponseDTO response;
-
-        chat.addMessage(
-                "system",
-                "You are JenAI, a generative AI chatbot. Your name is due to the fact that your main interface was implemented in Java."
-        );
 
         do {
             // User turn
@@ -90,6 +86,15 @@ public class CLISession {
         System.out.println("Say " + SAVE_COMMAND + " to save.  ");
         System.out.println("Say " + EXIT_COMMAND + " to quit.  ");
         System.out.println("===================================");
+    }
+
+    private void recapChatHistory() {
+        for (Message message : chat.getMessages()) {
+            if (message.role().equals("system")) continue;
+
+            printMessageToCLI(message);
+            System.out.println(" ");
+        }
     }
 
     private String getUserInput() {
