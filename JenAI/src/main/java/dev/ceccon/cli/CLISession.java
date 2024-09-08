@@ -6,6 +6,7 @@ import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
 import dev.ceccon.dtos.PromptDTO;
 import dev.ceccon.dtos.ResponseDTO;
+import dev.ceccon.storage.LocalFileStorage;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -13,14 +14,17 @@ import java.util.Scanner;
 public class CLISession {
 
     private static final String EXIT_COMMAND = "(exit)";
+    private static final String SAVE_COMMAND = "(save)";
 
     private Chat chat;
     private Scanner sc = new Scanner(System.in);
 
     private LLMClient llmClient;
+    private LocalFileStorage storage;
 
-    public CLISession(LLMClient llmClient) {
+    public CLISession(LLMClient llmClient, LocalFileStorage storage) {
         this.llmClient = llmClient;
+        this.storage = storage;
     }
 
     public void start() throws IOException {
@@ -40,6 +44,7 @@ public class CLISession {
             // User turn
             userInput = getUserInput();
             if (userInput.equals(EXIT_COMMAND)) break;
+            if (userInput.equals(SAVE_COMMAND)) { save(); continue; }
 
             userMessage = LLMSanitizer.sanitizeForChat(userInput);
             chat.addMessage(
@@ -65,12 +70,24 @@ public class CLISession {
         System.out.println("\nBye!");
     }
 
+    private void save() {
+        String resultMessage = "Conversation saved to " + storage.getAbsoluteBaseFolder();
+        try {
+            storage.save(chat);
+        } catch (IOException e) {
+            resultMessage = "Error when trying to save...";
+        }
+        System.out.println(resultMessage);
+    }
+
     private void printInstructions() {
         System.out.println("===================================");
         System.out.println("Welcome to JenAI chat!             ");
         System.out.println("                                   ");
         System.out.println("Enter your message when prompted,  ");
         System.out.println("then wait for the bot's response.  ");
+        System.out.println("                                   ");
+        System.out.println("Say " + SAVE_COMMAND + " to save.  ");
         System.out.println("Say " + EXIT_COMMAND + " to quit.  ");
         System.out.println("===================================");
     }

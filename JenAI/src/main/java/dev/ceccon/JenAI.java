@@ -3,6 +3,7 @@ package dev.ceccon;
 import dev.ceccon.cli.CLISession;
 import dev.ceccon.client.APIConfig;
 import dev.ceccon.client.LLMClient;
+import dev.ceccon.storage.LocalFileStorage;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -20,8 +21,9 @@ public class JenAI {
         }
 
         LLMClient llmClient = new LLMClient(config);
+        LocalFileStorage storage = new LocalFileStorage();
 
-        CLISession session = new CLISession(llmClient);
+        CLISession session = new CLISession(llmClient, storage);
         session.start();
     }
 
