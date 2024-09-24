@@ -98,13 +98,18 @@ public class CLISession {
     }
 
     private String getUserInput() {
-        System.out.println(" ");
+        printMessageSeparator();
         System.out.print("user: ");
         String input = sc.nextLine();
         return input;
     }
 
+    private void printMessageSeparator() {
+        System.out.println("\n----");
+    }
+
     private void printMessageToCLI(Message message) {
+        printMessageSeparator();
         System.out.println(message.role() + ": " + message.content());
     }
 
