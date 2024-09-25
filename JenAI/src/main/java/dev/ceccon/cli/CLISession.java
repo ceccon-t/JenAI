@@ -40,7 +40,7 @@ public class CLISession {
             // User turn
             userInput = getUserInput();
             if (userInput.equals(EXIT_COMMAND)) break;
-            if (userInput.equals(SAVE_COMMAND)) { save(); continue; }
+            if (userInput.startsWith(SAVE_COMMAND)) { save(userInput); continue; }
 
             userMessage = LLMSanitizer.sanitizeForChat(userInput);
             chat.addMessage(
@@ -66,10 +66,11 @@ public class CLISession {
         System.out.println("\nBye!");
     }
 
-    private void save() {
+    private void save(String userInput) {
         String resultMessage = "Conversation saved to " + storage.getAbsoluteBaseFolder();
         try {
-            storage.save(chat);
+            String filename = userInput.replace(SAVE_COMMAND, "").trim();
+            storage.save(chat, filename);
         } catch (IOException e) {
             resultMessage = "Error when trying to save...";
         }

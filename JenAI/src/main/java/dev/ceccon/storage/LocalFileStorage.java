@@ -30,9 +30,11 @@ public class LocalFileStorage {
         return Paths.get(baseFolder).toAbsolutePath().normalize().toString();
     }
 
-    public void save(Chat chat) throws IOException {
+    public void save(Chat chat, String chosenFilename) throws IOException {
         ensureBaseFolderExists();
-        String filename = generateFileName();
+
+        chosenFilename = chosenFilename.trim();
+        String filename = chosenFilename.isEmpty() ? generateFileName() : chosenFilename;
 
         saveAsText(chat, filename);
         saveAsJSON(chat, filename);
