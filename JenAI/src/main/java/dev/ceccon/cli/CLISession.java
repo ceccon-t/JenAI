@@ -78,15 +78,17 @@ public class CLISession {
     }
 
     private void printInstructions() {
-        System.out.println("===================================");
-        System.out.println("Welcome to JenAI chat!             ");
-        System.out.println("                                   ");
-        System.out.println("Enter your message when prompted,  ");
-        System.out.println("then wait for the bot's response.  ");
-        System.out.println("                                   ");
-        System.out.println("Say " + SAVE_COMMAND + " to save.  ");
-        System.out.println("Say " + EXIT_COMMAND + " to quit.  ");
-        System.out.println("===================================");
+        System.out.println("=============================================================");
+        System.out.println("Welcome to JenAI chat!                                       ");
+        System.out.println("                                                             ");
+        System.out.println("Enter your message when prompted,                            ");
+        System.out.println("then wait for the bot's response.                            ");
+        System.out.println("                                                             ");
+        System.out.println("Commands:                                                    ");
+        System.out.println("  " + SAVE_COMMAND + ", to save with default filename.       ");
+        System.out.println("  " + SAVE_COMMAND + " <filename>, to use a custom filename. ");
+        System.out.println("  " + EXIT_COMMAND + ", to quit.                             ");
+        System.out.println("=============================================================");
     }
 
     private void recapChatHistory() {
