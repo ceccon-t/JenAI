@@ -14,7 +14,7 @@ Just type your message when prompted and press Enter to send it.
 
 The application manages the conversation as a chat between the user (you) and the assistant (the LLM model), so any new message you send will be answered considering the context of the previous messages, up until the context size limit of the model being used. After each answer from the assistant a token usage count will be displayed, in which you can check how many tokens were present in the context when answering - from that, you can have a sense of how close to the model's limit the conversation is getting. Once the limit is exceeded, the model will start losing the memory of the earliest messages in the conversation (it will probably still hallucinate answers about it if you ask).
 
-You can save the conversation to disk by entering `(save)` as a message. This will create two files, one in plain text and one in json format, to a `jenai_chats` folder on the current working directory - if the folder does not exist, it will be created.
+You can save the conversation to disk by entering `(save)` as a message. This will create two files, one in plain text and one in json format, to a `jenai_chats` folder on the current working directory - if the folder does not exist, it will be created. When saving you can specify a custom filename to be used with `(save) <filename>`, otherwise the filename defaults to `JenAI_chat_` with the date and hour as suffix.
 
 To exit the conversation, simply type `(exit)` as your next message and send it.
 
