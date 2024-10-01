@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Refactor: moved DTOs package from top level to subpackage of client package (no end user change)
+
 ### Deprecated
 
 ### Removed

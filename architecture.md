@@ -28,7 +28,7 @@ There is only one class under the `cli` package, but it is an important one. Its
 
 Classes under the `client` package handle the interaction with the LLM server through its API. Another axiom of the project was that it would only work with local LLMs, so only the port to which requests are sent is configurable - the host is always hardcoded as `localhost`. `LLMClient` is responsible for making the requests and returning the responses in a format that the rest of the application can work with. `APIConfig` stores the configuration for the API, while `LLMSanitizer` offers some helper methods to remove problematic characters and special tokens from messages.
 
-### DTOs
+#### DTOs
 
 Helper classes to model the objects used by the LLM server API.
 
