@@ -4,8 +4,8 @@ import dev.ceccon.client.LLMClient;
 import dev.ceccon.client.LLMSanitizer;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
-import dev.ceccon.dtos.PromptDTO;
-import dev.ceccon.dtos.ResponseDTO;
+import dev.ceccon.client.dtos.PromptDTO;
+import dev.ceccon.client.dtos.ResponseDTO;
 import dev.ceccon.storage.LocalFileStorage;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package dev.ceccon.dtos;
+package dev.ceccon.client.dtos;
 
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
