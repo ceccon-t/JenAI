@@ -64,6 +64,17 @@ public class JenAI {
                     System.out.println("Could not parse chat history parameter. \nUsage: $ java -jar JenAI.jar -c <path_to_chat_json_file>");
                     throw new InvalidParameterException("Could not parse parameter.");
                 }
+            } else if (args[i].equals("-s")) {
+                try {
+                    String streamingArgument = args[i+1];
+                    if (!streamingArgument.equals("true") && !streamingArgument.equals("false")) throw new IllegalArgumentException("Boolean string was not <true|false>");
+                    boolean useStreamingResponse = Boolean.valueOf(streamingArgument);
+                    apiConfig.setStreaming(useStreamingResponse);
+                    i += 1;
+                } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
+                    System.out.println("Could not parse streaming response parameter. \nUsage: $ java -jar JenAI.jar -s <true|false>");
+                    throw new InvalidParameterException("Could not parse parameter.");
+                }
             } else {
                 System.out.println("Could not recognize parameter '" + args[i] + "'.");
                 throw new InvalidParameterException("Could not parse parameter.");
