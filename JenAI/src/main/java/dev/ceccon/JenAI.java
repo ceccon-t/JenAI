@@ -10,7 +10,6 @@ import dev.ceccon.storage.LocalFileStorage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.InvalidParameterException;
 
 public class JenAI {
 
@@ -23,7 +22,7 @@ public class JenAI {
 
         try {
             parseArguments(args);
-        } catch (InvalidParameterException e) {
+        } catch (IllegalArgumentException e) {
             return;
         }
 
@@ -34,7 +33,7 @@ public class JenAI {
         session.start();
     }
 
-    private static void parseArguments(String[] args) throws InvalidParameterException {
+    private static void parseArguments(String[] args) throws IllegalArgumentException {
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-p")) {
                 try {
@@ -43,7 +42,7 @@ public class JenAI {
                     i += 1;
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     System.out.println("Could not parse port parameter. \nUsage: $ java -jar JenAI.jar -p <port_number>");
-                    throw new InvalidParameterException("Could not parse parameter.");
+                    throw new IllegalArgumentException("Could not parse parameter.");
                 }
             } else if (args[i].equals("-m")) {
                 try {
@@ -52,7 +51,7 @@ public class JenAI {
                     i += 1;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Could not parse model parameter. \nUsage: $ java -jar JenAI.jar -m <model_name>");
-                    throw new InvalidParameterException("Could not parse parameter.");
+                    throw new IllegalArgumentException("Could not parse parameter.");
                 }
             } else if (args[i].equals("-c")) {
                 try {
@@ -62,7 +61,7 @@ public class JenAI {
                     chat = mapper.readValue(filePath.toFile(), Chat.class);
                 } catch (ArrayIndexOutOfBoundsException | IOException e) {
                     System.out.println("Could not parse chat history parameter. \nUsage: $ java -jar JenAI.jar -c <path_to_chat_json_file>");
-                    throw new InvalidParameterException("Could not parse parameter.");
+                    throw new IllegalArgumentException("Could not parse parameter.");
                 }
             } else if (args[i].equals("-s")) {
                 try {
@@ -73,11 +72,11 @@ public class JenAI {
                     i += 1;
                 } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
                     System.out.println("Could not parse streaming response parameter. \nUsage: $ java -jar JenAI.jar -s <true|false>");
-                    throw new InvalidParameterException("Could not parse parameter.");
+                    throw new IllegalArgumentException("Could not parse parameter.");
                 }
             } else {
                 System.out.println("Could not recognize parameter '" + args[i] + "'.");
-                throw new InvalidParameterException("Could not parse parameter.");
+                throw new IllegalArgumentException("Could not parse parameter.");
             }
         }
     }
