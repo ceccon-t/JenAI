@@ -12,6 +12,7 @@ public class PromptDTO {
 
     private String model = "";
     private List<MessageDTO> messages = new ArrayList<>();
+    private boolean stream = false;
 
     private PromptDTO() {}
 
@@ -37,4 +38,11 @@ public class PromptDTO {
         return messages;
     }
 
+    public boolean isStream() {
+        return stream;
+    }
+
+    public void setStream(boolean stream) {
+        this.stream = stream;
+    }
 }
