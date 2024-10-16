@@ -2,10 +2,10 @@ package dev.ceccon.cli;
 
 import dev.ceccon.client.LLMClient;
 import dev.ceccon.client.LLMSanitizer;
+import dev.ceccon.client.Response;
 import dev.ceccon.client.UsageMetrics;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
-import dev.ceccon.client.dtos.ResponseDTO;
 import dev.ceccon.storage.LocalFileStorage;
 
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class CLISession {
         String userInput = "";
         String userMessage = "";
         String assistantMessage = "";
-        ResponseDTO response;
+        Response response;
 
         do {
             // User turn
@@ -114,7 +114,7 @@ public class CLISession {
         System.out.println(message.role() + ": " + message.content());
     }
 
-    private void printUsageMetrics(ResponseDTO responseDTO) {
+    private void printUsageMetrics(Response responseDTO) {
         StringBuilder builder = new StringBuilder();
         UsageMetrics metrics = responseDTO.getUsage();
         String usageReport = builder.append("(Token usage metrics: [")

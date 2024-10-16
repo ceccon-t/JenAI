@@ -1,12 +1,13 @@
 package dev.ceccon.client.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dev.ceccon.client.Response;
 import dev.ceccon.client.UsageMetrics;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponseDTO {
+public class ResponseDTO implements Response {
 
     // Auxiliary data structures
     public record MessageDTO (String role, String content) {}
