@@ -1,6 +1,7 @@
 package dev.ceccon.client.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dev.ceccon.client.UsageMetrics;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class ResponseDTO {
     // Auxiliary data structures
     public record MessageDTO (String role, String content) {}
     public record ChoiceDTO (String finish_reason, Integer index, MessageDTO message) {}
-    public record UsageDTO (Integer completion_tokens, Integer prompt_tokens, Integer total_tokens) {}
+    public record UsageDTO (Integer completion_tokens, Integer prompt_tokens, Integer total_tokens) implements UsageMetrics {}
 
     // Fields from response
     private List<ChoiceDTO> choices;

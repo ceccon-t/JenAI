@@ -2,6 +2,7 @@ package dev.ceccon.cli;
 
 import dev.ceccon.client.LLMClient;
 import dev.ceccon.client.LLMSanitizer;
+import dev.ceccon.client.UsageMetrics;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
 import dev.ceccon.client.dtos.ResponseDTO;
@@ -115,13 +116,13 @@ public class CLISession {
 
     private void printUsageMetrics(ResponseDTO responseDTO) {
         StringBuilder builder = new StringBuilder();
-        ResponseDTO.UsageDTO usageDTO = responseDTO.getUsage();
+        UsageMetrics metrics = responseDTO.getUsage();
         String usageReport = builder.append("(Token usage metrics: [")
-                .append("Completion tokens: ").append(usageDTO.completion_tokens())
+                .append("Completion tokens: ").append(metrics.completion_tokens())
                 .append(", ")
-                .append("Prompt tokens: ").append(usageDTO.prompt_tokens())
+                .append("Prompt tokens: ").append(metrics.prompt_tokens())
                 .append(", ")
-                .append("Total tokens: ").append(usageDTO.total_tokens())
+                .append("Total tokens: ").append(metrics.total_tokens())
                 .append("])")
                 .toString();
         System.out.println(usageReport);
