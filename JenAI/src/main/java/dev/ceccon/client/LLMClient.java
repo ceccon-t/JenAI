@@ -3,6 +3,7 @@ package dev.ceccon.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ceccon.client.dtos.PromptDTO;
 import dev.ceccon.client.dtos.ResponseDTO;
+import dev.ceccon.conversation.Chat;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -19,7 +20,8 @@ public class LLMClient {
         this.config = config;
     }
 
-    public ResponseDTO send(PromptDTO promptDTO) throws IOException {
+    public ResponseDTO send(Chat chat) throws IOException {
+        PromptDTO promptDTO = PromptDTO.forChat(chat);
         String urlString = config.getFullUrl();
         promptDTO.setModel(config.getModel());
         ObjectMapper mapper = new ObjectMapper();

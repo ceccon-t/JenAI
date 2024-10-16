@@ -4,7 +4,6 @@ import dev.ceccon.client.LLMClient;
 import dev.ceccon.client.LLMSanitizer;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
-import dev.ceccon.client.dtos.PromptDTO;
 import dev.ceccon.client.dtos.ResponseDTO;
 import dev.ceccon.storage.LocalFileStorage;
 
@@ -49,9 +48,7 @@ public class CLISession {
             );
 
             // Bot turn
-            response = llmClient.send(
-                    PromptDTO.forChat(chat)
-            );
+            response = llmClient.send(chat);
 
             printMessageToCLI(new Message(response.getRole(), LLMSanitizer.sanitizeLLMSpecialTokens(response.getContent())));
             assistantMessage = LLMSanitizer.sanitizeForChat(response.getContent());
