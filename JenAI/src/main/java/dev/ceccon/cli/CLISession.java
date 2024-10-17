@@ -2,8 +2,8 @@ package dev.ceccon.cli;
 
 import dev.ceccon.client.LLMClient;
 import dev.ceccon.client.LLMSanitizer;
-import dev.ceccon.client.Response;
-import dev.ceccon.client.UsageMetrics;
+import dev.ceccon.client.response.BlockResponse;
+import dev.ceccon.client.response.UsageMetrics;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
 import dev.ceccon.storage.LocalFileStorage;
@@ -34,7 +34,7 @@ public class CLISession {
         String userInput = "";
         String userMessage = "";
         String assistantMessage = "";
-        Response response;
+        BlockResponse response;
 
         do {
             // User turn
@@ -114,15 +114,15 @@ public class CLISession {
         System.out.println(message.role() + ": " + message.content());
     }
 
-    private void printUsageMetrics(Response responseDTO) {
+    private void printUsageMetrics(BlockResponse response) {
         StringBuilder builder = new StringBuilder();
-        UsageMetrics metrics = responseDTO.getUsage();
+        UsageMetrics metrics = response.getMetrics();
         String usageReport = builder.append("(Token usage metrics: [")
-                .append("Completion tokens: ").append(metrics.completion_tokens())
+                .append("Completion tokens: ").append(metrics.getCompletionTokens())
                 .append(", ")
-                .append("Prompt tokens: ").append(metrics.prompt_tokens())
+                .append("Prompt tokens: ").append(metrics.getPromptTokens())
                 .append(", ")
-                .append("Total tokens: ").append(metrics.total_tokens())
+                .append("Total tokens: ").append(metrics.getTotalTokens())
                 .append("])")
                 .toString();
         System.out.println(usageReport);

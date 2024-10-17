@@ -1,18 +1,23 @@
 package dev.ceccon.client.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import dev.ceccon.client.Response;
-import dev.ceccon.client.UsageMetrics;
+import dev.ceccon.client.response.BlockResponse;
+import dev.ceccon.client.response.UsageMetrics;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponseDTO implements Response {
+public class ResponseDTO {
 
     // Auxiliary data structures
     public record MessageDTO (String role, String content) {}
     public record ChoiceDTO (String finish_reason, Integer index, MessageDTO message) {}
-    public record UsageDTO (Integer completion_tokens, Integer prompt_tokens, Integer total_tokens) implements UsageMetrics {}
+
+    public record UsageDTO (Integer completion_tokens, Integer prompt_tokens, Integer total_tokens) {
+        public UsageMetrics toUsageMetrics() {
+            return new UsageMetrics(completion_tokens, prompt_tokens, total_tokens);
+        }
+    }
 
     // Fields from response
     private List<ChoiceDTO> choices;
@@ -28,6 +33,10 @@ public class ResponseDTO implements Response {
 
     public String getContent() {
         return choices.get(0).message().content();
+    }
+
+    public BlockResponse toBlockResponse() {
+        return new BlockResponse(getRole(), getContent(), usage.toUsageMetrics());
     }
 
     public List<ChoiceDTO> getChoices() {
@@ -70,7 +79,7 @@ public class ResponseDTO implements Response {
         this.object = object;
     }
 
-    public UsageDTO getUsage() {
+    public UsageDTO getMetrics() {
         return usage;
     }
 

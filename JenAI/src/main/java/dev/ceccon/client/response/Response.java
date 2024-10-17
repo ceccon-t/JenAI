@@ -1,11 +1,9 @@
-package dev.ceccon.client;
+package dev.ceccon.client.response;
 
 public interface Response {
 
     String getRole();
 
     String getContent();
-
-    UsageMetrics getUsage();
 
 }
