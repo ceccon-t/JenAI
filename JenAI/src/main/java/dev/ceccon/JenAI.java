@@ -29,7 +29,7 @@ public class JenAI {
         LLMClient llmClient = new LLMClient(apiConfig);
         LocalFileStorage storage = new LocalFileStorage();
 
-        CLISession session = new CLISession(chat, llmClient, storage);
+        CLISession session = new CLISession(chat, apiConfig, llmClient, storage);
         session.start();
     }
 

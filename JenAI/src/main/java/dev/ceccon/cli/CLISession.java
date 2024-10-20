@@ -1,8 +1,11 @@
 package dev.ceccon.cli;
 
+import dev.ceccon.client.APIConfig;
 import dev.ceccon.client.LLMClient;
 import dev.ceccon.client.LLMSanitizer;
 import dev.ceccon.client.response.BlockResponse;
+import dev.ceccon.client.response.Response;
+import dev.ceccon.client.response.StreamedResponse;
 import dev.ceccon.client.response.UsageMetrics;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
@@ -19,11 +22,13 @@ public class CLISession {
     private Chat chat;
     private Scanner sc = new Scanner(System.in);
 
+    private APIConfig apiConfig;
     private LLMClient llmClient;
     private LocalFileStorage storage;
 
-    public CLISession(Chat chat, LLMClient llmClient, LocalFileStorage storage) {
+    public CLISession(Chat chat, APIConfig apiConfig, LLMClient llmClient, LocalFileStorage storage) {
         this.chat = chat;
+        this.apiConfig = apiConfig;
         this.llmClient = llmClient;
         this.storage = storage;
     }
@@ -34,7 +39,7 @@ public class CLISession {
         String userInput = "";
         String userMessage = "";
         String assistantMessage = "";
-        BlockResponse response;
+        Response response;
 
         do {
             // User turn
@@ -49,19 +54,31 @@ public class CLISession {
             );
 
             // Bot turn
-            response = llmClient.send(chat);
+            if (usingStreaming()) {
+                prepareScreenForStreamingResponse();
+                StreamedResponse streamedResponse = llmClient.sendWithStreamingResponse(chat);
+                tidyUpScreenAfterStreamingResponse();
+                response = streamedResponse;
+            } else {
+                BlockResponse blockResponse = llmClient.send(chat);
+                response = blockResponse;
+                printMessageToCLI(new Message(response.getRole(), LLMSanitizer.sanitizeLLMSpecialTokens(response.getContent())));
+                printUsageMetrics(blockResponse);
+            }
 
-            printMessageToCLI(new Message(response.getRole(), LLMSanitizer.sanitizeLLMSpecialTokens(response.getContent())));
             assistantMessage = LLMSanitizer.sanitizeForChat(response.getContent());
             chat.addMessage(
                     response.getRole(),
                     assistantMessage
             );
-            printUsageMetrics(response);
 
         } while(true);
 
         System.out.println("\nBye!");
+    }
+
+    private boolean usingStreaming() {
+        return apiConfig.getStreaming();
     }
 
     private void save(String userInput) {
@@ -112,6 +129,15 @@ public class CLISession {
     private void printMessageToCLI(Message message) {
         printMessageSeparator();
         System.out.println(message.role() + ": " + message.content());
+    }
+
+    private void prepareScreenForStreamingResponse() {
+        printMessageSeparator();
+        System.out.print(LLMClient.DEFAULT_BOT_ROLE + ": ");
+    }
+
+    private void tidyUpScreenAfterStreamingResponse() {
+        System.out.println("");
     }
 
     private void printUsageMetrics(BlockResponse response) {
