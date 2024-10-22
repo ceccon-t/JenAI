@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.function.Consumer;
 
 public class LLMClient {
 
@@ -64,7 +65,7 @@ public class LLMClient {
         return responseDTO.toBlockResponse();
     }
 
-    public StreamedResponse sendWithStreamingResponse(Chat chat) throws IOException {
+    public StreamedResponse sendWithStreamingResponse(Chat chat, Consumer<String> tokenConsumer) throws IOException {
         PromptDTO promptDTO = PromptDTO.forChat(chat);
         promptDTO.setStream(true);
         String urlString = config.getFullUrl();
@@ -99,7 +100,7 @@ public class LLMClient {
                 if (eventDTO.isFinalEvent()) break;
                 String eventData = eventDTO.getBestChoice();
 
-                System.out.print(eventData);
+                tokenConsumer.accept(eventData);
                 responseBuilder.append(eventData);
             }
             rawResponse = responseBuilder.toString();

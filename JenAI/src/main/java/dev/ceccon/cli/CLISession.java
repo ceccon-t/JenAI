@@ -56,7 +56,9 @@ public class CLISession {
             // Bot turn
             if (usingStreaming()) {
                 prepareScreenForStreamingResponse();
-                StreamedResponse streamedResponse = llmClient.sendWithStreamingResponse(chat);
+                StreamedResponse streamedResponse = llmClient.sendWithStreamingResponse(chat,
+                        token -> System.out.print(token)
+                );
                 tidyUpScreenAfterStreamingResponse();
                 response = streamedResponse;
             } else {
