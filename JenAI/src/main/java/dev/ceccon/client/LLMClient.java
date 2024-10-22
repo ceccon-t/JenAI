@@ -27,11 +27,14 @@ public class LLMClient {
     }
 
     public BlockResponse send(Chat chat) throws IOException {
-        PromptDTO promptDTO = PromptDTO.forChat(chat);
-        String urlString = config.getFullUrl();
-        promptDTO.setModel(config.getModel());
         ObjectMapper mapper = new ObjectMapper();
 
+        PromptDTO promptDTO = PromptDTO.forChat(chat);
+        promptDTO.setStream(false);
+        promptDTO.setModel(config.getModel());
+        String body = mapper.writeValueAsString(promptDTO);
+
+        String urlString = config.getFullUrl();
         URL url = new URL(urlString);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -40,14 +43,11 @@ public class LLMClient {
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Accept", "application/json");
 
-        String body = mapper.writeValueAsString(promptDTO);
-
         try (DataOutputStream dos = new DataOutputStream(connection.getOutputStream())) {
             dos.writeBytes(body);
             dos.flush();
         }
 
-        int responseCode = connection.getResponseCode();
         String rawResponse = "";
 
         try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
@@ -66,12 +66,14 @@ public class LLMClient {
     }
 
     public StreamedResponse sendWithStreamingResponse(Chat chat, Consumer<String> tokenConsumer) throws IOException {
-        PromptDTO promptDTO = PromptDTO.forChat(chat);
-        promptDTO.setStream(true);
-        String urlString = config.getFullUrl();
-        promptDTO.setModel(config.getModel());
         ObjectMapper mapper = new ObjectMapper();
 
+        PromptDTO promptDTO = PromptDTO.forChat(chat);
+        promptDTO.setStream(true);
+        promptDTO.setModel(config.getModel());
+        String body = mapper.writeValueAsString(promptDTO);
+
+        String urlString = config.getFullUrl();
         URL url = new URL(urlString);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -80,14 +82,11 @@ public class LLMClient {
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Accept", "application/json");
 
-        String body = mapper.writeValueAsString(promptDTO);
-
         try (DataOutputStream dos = new DataOutputStream(connection.getOutputStream())) {
             dos.writeBytes(body);
             dos.flush();
         }
 
-        int responseCode = connection.getResponseCode();
         String rawResponse = "";
 
         try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
