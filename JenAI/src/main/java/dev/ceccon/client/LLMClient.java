@@ -26,44 +26,33 @@ public class LLMClient {
         this.config = config;
     }
 
-    public BlockResponse send(Chat chat) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+public BlockResponse send(Chat chat) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
 
-        PromptDTO promptDTO = PromptDTO.forChat(chat);
-        promptDTO.setStream(false);
-        promptDTO.setModel(config.getModel());
-        String body = mapper.writeValueAsString(promptDTO);
+    PromptDTO promptDTO = PromptDTO.forChat(chat);
+    promptDTO.setStream(false);
+    promptDTO.setModel(config.getModel());
+    String body = mapper.writeValueAsString(promptDTO);
 
-        String urlString = config.getFullUrl();
-        URL url = new URL(urlString);
+    LLMConnection llmConnection = LLMConnection.forUrl(config.getFullUrl());
+    llmConnection.send(body);
 
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setDoOutput(true);
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
+    String rawResponse = "";
 
-        try (DataOutputStream dos = new DataOutputStream(connection.getOutputStream())) {
-            dos.writeBytes(body);
-            dos.flush();
+    try (BufferedReader in = llmConnection.getBufferedReader()) {
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
         }
-
-        String rawResponse = "";
-
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            rawResponse = response.toString();
-        }
-
-        connection.disconnect();
-
-        ResponseDTO responseDTO = mapper.readValue(rawResponse, ResponseDTO.class);
-        return responseDTO.toBlockResponse();
+        rawResponse = response.toString();
     }
+
+    llmConnection.close();
+
+    ResponseDTO responseDTO = mapper.readValue(rawResponse, ResponseDTO.class);
+    return responseDTO.toBlockResponse();
+}
 
     public StreamedResponse sendWithStreamingResponse(Chat chat, Consumer<String> tokenConsumer) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
