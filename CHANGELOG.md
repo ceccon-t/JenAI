@@ -9,7 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Option to use streaming response
+
+- First unit tests
+
 ### Changed
+
+- Use more suitable exception when command line arguments are invalid
+
+- Internal refactor: encapsulate DTO classes on client package
 
 ### Deprecated
 
