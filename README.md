@@ -12,7 +12,7 @@ Simple CLI interface to chat with a local LLM.
 
 Just type your message when prompted and press Enter to send it.
 
-The application manages the conversation as a chat between the user (you) and the assistant (the LLM model), so any new message you send will be answered considering the context of the previous messages, up until the context size limit of the model being used. After each answer from the assistant a token usage count will be displayed, in which you can check how many tokens were present in the context when answering - from that, you can have a sense of how close to the model's limit the conversation is getting. Once the limit is exceeded, the model will start losing the memory of the earliest messages in the conversation (it will probably still hallucinate answers about it if you ask).
+The application manages the conversation as a chat between the user (you) and the assistant (the LLM model), so any new message you send will be answered considering the context of the previous messages, up until the context size limit of the model being used. Once the limit is exceeded, the model will start losing the memory of the earliest messages in the conversation (it will probably still hallucinate answers about it if you ask).
 
 You can save the conversation to disk by entering `(save)` as a message. This will create two files, one in plain text and one in json format, to a `jenai_chats` folder on the current working directory - if the folder does not exist, it will be created. When saving you can specify a custom filename to be used with `(save) <filename>`, otherwise the filename defaults to `JenAI_chat_` with the date and hour as suffix.
 
@@ -36,6 +36,10 @@ Example using a custom port (8888, in this case):
 
 `$ java -jar JenAI.jar -p 8888`
 
+By default the application uses streaming response, with new tokens being displayed as soon as they are produced. This provides quick feedback and is useful when working with bigger models, that might take several minutes to produce the entire response. However, it is also possible to run it using block responses, displaying the response only when its entirety has been produced by the model - the advantage of this is that it allows for calculating the prompt usage metrics, which can help get a sense of when a model is likely to start forgetting earlier messages. Example using block responses (`-s` option stands for streaming, can be set to `true` or `false`):
+
+`$ java -jar JenAI.jar -s false`
+
 You can also start a conversation from a previously saved state (check `How to use` section for info about saving). For this, pass a `-c` option with the path from the current working directory to the json file that was saved (make sure to reference the JSON file, not the plain text one). Example:
 
 `$ java -jar JenAI.jar -c ./jenai_chats/JenAI_chat_2024-09-08_12-00-00_7167862348.json`
@@ -51,6 +55,10 @@ If you are using ollama for the LLM server, you will have to at a minimum pass t
 ## How to build the project
 
 This is a simple Maven project, so the easiest way to build it is running `mvn clean package` in the JenAI folder (assuming Maven is installed - if not, check its site and install from there). A jar file containing everything the application needs to run will be created at `JenAI/target/JenAI-<VERSION>.jar`.
+
+## How to run the automated tests
+
+The simplest way is to run `mvn test` on the main folder of the application.
 
 ## More info
 
