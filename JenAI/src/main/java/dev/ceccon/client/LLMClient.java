@@ -22,7 +22,7 @@ public class LLMClient {
         this.config = config;
     }
 
-    public BlockResponse send(Chat chat) throws IOException {
+    public BlockResponse getNextAIResponse(Chat chat) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         PromptDTO promptDTO = PromptDTO.forChat(chat);
@@ -50,7 +50,7 @@ public class LLMClient {
         return responseDTO.toBlockResponse();
     }
 
-    public StreamedResponse sendWithStreamingResponse(Chat chat, Consumer<String> tokenConsumer) throws IOException {
+    public StreamedResponse getNextAIResponseStreaming(Chat chat, Consumer<String> tokenConsumer) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         PromptDTO promptDTO = PromptDTO.forChat(chat);

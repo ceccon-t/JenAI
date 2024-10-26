@@ -56,13 +56,13 @@ public class CLISession {
             // Bot turn
             if (usingStreaming()) {
                 prepareScreenForStreamingResponse();
-                StreamedResponse streamedResponse = llmClient.sendWithStreamingResponse(chat,
+                StreamedResponse streamedResponse = llmClient.getNextAIResponseStreaming(chat,
                         token -> System.out.print(token)
                 );
                 tidyUpScreenAfterStreamingResponse();
                 response = streamedResponse;
             } else {
-                BlockResponse blockResponse = llmClient.send(chat);
+                BlockResponse blockResponse = llmClient.getNextAIResponse(chat);
                 response = blockResponse;
                 printMessageToCLI(new Message(response.getRole(), LLMSanitizer.sanitizeLLMSpecialTokens(response.getContent())));
                 printUsageMetrics(blockResponse);

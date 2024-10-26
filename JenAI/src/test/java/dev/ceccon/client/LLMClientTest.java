@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LLMClientTest {
 
     @Test
-    void sendBuildsBlockResponse() throws IOException {
+    void getNextAIResponseBuildsBlockResponse() throws IOException {
         try (MockedStatic<LLMConnection> mockedLLMConnection = mockStatic(LLMConnection.class)) {
             // expected values
             String role = "assistant";
@@ -41,7 +41,7 @@ class LLMClientTest {
             // run test
             LLMClient client = new LLMClient(mockConfig);
 
-            BlockResponse response = client.send(new Chat());
+            BlockResponse response = client.getNextAIResponse(new Chat());
 
             assertEquals(role, response.getRole());
             assertEquals(content, response.getContent());
@@ -49,7 +49,7 @@ class LLMClientTest {
     }
 
     @Test
-    void sendWithStreamingReturnsResponseWithSingleToken() throws IOException {
+    void getNextAIResponseStreamingReturnsResponseWithSingleToken() throws IOException {
         try (MockedStatic<LLMConnection> mockedLLMConnection = mockStatic(LLMConnection.class)) {
             // expected values
             String role = "assistant";
@@ -75,7 +75,7 @@ class LLMClientTest {
             // run test
             LLMClient client = new LLMClient(mockConfig);
 
-            StreamedResponse response = client.sendWithStreamingResponse(new Chat(), mockedConsumer);
+            StreamedResponse response = client.getNextAIResponseStreaming(new Chat(), mockedConsumer);
 
             assertEquals(role, response.getRole());
             assertEquals(content, response.getContent());
@@ -84,7 +84,7 @@ class LLMClientTest {
     }
 
     @Test
-    void sendWithStreamingReturnsResponseWithMultipleTokens() throws IOException {
+    void getNextAIResponseStreamingReturnsResponseWithMultipleTokens() throws IOException {
         try (MockedStatic<LLMConnection> mockedLLMConnection = mockStatic(LLMConnection.class)) {
             // expected values
             String role = "assistant";
@@ -115,7 +115,7 @@ class LLMClientTest {
             // run test
             LLMClient client = new LLMClient(mockConfig);
 
-            StreamedResponse response = client.sendWithStreamingResponse(new Chat(), mockedConsumer);
+            StreamedResponse response = client.getNextAIResponseStreaming(new Chat(), mockedConsumer);
 
             assertEquals(role, response.getRole());
             assertEquals(content, response.getContent());
@@ -124,7 +124,7 @@ class LLMClientTest {
     }
 
     @Test
-    void sendWithStreamingReturnsResponseWhenReceivingEmptyLinesInBetweenTokenEvents() throws  IOException{
+    void getNextAIResponseStreamingReturnsResponseWhenReceivingEmptyLinesInBetweenTokenEvents() throws  IOException{
         try (MockedStatic<LLMConnection> mockedLLMConnection = mockStatic(LLMConnection.class)) {
             // expected values
             String role = "assistant";
@@ -156,7 +156,7 @@ class LLMClientTest {
             // run test
             LLMClient client = new LLMClient(mockConfig);
 
-            StreamedResponse response = client.sendWithStreamingResponse(new Chat(), mockedConsumer);
+            StreamedResponse response = client.getNextAIResponseStreaming(new Chat(), mockedConsumer);
 
             assertEquals(role, response.getRole());
             assertEquals(content, response.getContent());
@@ -165,7 +165,7 @@ class LLMClientTest {
     }
 
     @Test
-    void sendWithStreamingReturnsResponseWhenFinalEventIsNotNull() throws IOException {
+    void getNextAIResponseStreamingReturnsResponseWhenFinalEventIsNotNull() throws IOException {
         try (MockedStatic<LLMConnection> mockedLLMConnection = mockStatic(LLMConnection.class)) {
             // expected values
             String role = "assistant";
@@ -199,7 +199,7 @@ class LLMClientTest {
             // run test
             LLMClient client = new LLMClient(mockConfig);
 
-            StreamedResponse response = client.sendWithStreamingResponse(new Chat(), mockedConsumer);
+            StreamedResponse response = client.getNextAIResponseStreaming(new Chat(), mockedConsumer);
 
             assertEquals(role, response.getRole());
             assertEquals(content, response.getContent());
