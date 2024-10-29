@@ -13,6 +13,7 @@ public class PromptDTO {
     private String model = "";
     private List<MessageDTO> messages = new ArrayList<>();
     private boolean stream = false;
+    private double temperature;
 
     private PromptDTO() {}
 
@@ -45,4 +46,13 @@ public class PromptDTO {
     public void setStream(boolean stream) {
         this.stream = stream;
     }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
 }
