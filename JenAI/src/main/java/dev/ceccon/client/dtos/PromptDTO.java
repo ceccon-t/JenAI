@@ -1,5 +1,6 @@
 package dev.ceccon.client.dtos;
 
+import dev.ceccon.client.APIConfig;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
 
@@ -17,14 +18,19 @@ public class PromptDTO {
 
     private PromptDTO() {}
 
-    public static PromptDTO forChat(Chat chat) {
-        PromptDTO prompt = new PromptDTO();
+    public static PromptDTO build(Chat chat, APIConfig config) {
+        PromptDTO dto = new PromptDTO();
+        dto.addMessagesFromChat(chat);
+        dto.setTemperature(config.getTemperature());
+        dto.setModel(config.getModel());
 
+        return dto;
+    }
+
+    private void addMessagesFromChat(Chat chat) {
         for (Message message : chat.getMessages()) {
-            prompt.messages.add(new MessageDTO(message.role(), message.content()));
+            this.messages.add(new MessageDTO(message.role(), message.content()));
         }
-
-        return prompt;
     }
 
     public String getModel() {

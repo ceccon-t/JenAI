@@ -25,9 +25,8 @@ public class LLMClient {
     public BlockResponse getNextAIResponse(Chat chat) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
-        PromptDTO promptDTO = PromptDTO.forChat(chat);
+        PromptDTO promptDTO = PromptDTO.build(chat, config);
         promptDTO.setStream(false);
-        promptDTO.setModel(config.getModel());
         String body = mapper.writeValueAsString(promptDTO);
 
         LLMConnection llmConnection = LLMConnection.forUrl(config.getFullUrl());
@@ -53,9 +52,8 @@ public class LLMClient {
     public StreamedResponse getNextAIResponseStreaming(Chat chat, Consumer<String> tokenConsumer) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
-        PromptDTO promptDTO = PromptDTO.forChat(chat);
+        PromptDTO promptDTO = PromptDTO.build(chat, config);
         promptDTO.setStream(true);
-        promptDTO.setModel(config.getModel());
         String body = mapper.writeValueAsString(promptDTO);
 
         LLMConnection llmConnection = LLMConnection.forUrl(config.getFullUrl());
