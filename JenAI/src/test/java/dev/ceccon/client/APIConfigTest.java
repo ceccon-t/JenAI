@@ -7,6 +7,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class APIConfigTest {
 
     @Test
+    void getFullUrlBuildsUrlWithPropertiesBeingSet() {
+        String protocol = "http";
+        String host = "localhost";
+        String port = "8089";
+        String endpoint = "v1/chat/completions";
+        String url = protocol + "://" + host + ":" + port + "/" + endpoint;
+
+        APIConfig config = new APIConfig();
+        config.setPort(port);
+
+        String urlFromConfig = config.getFullUrl();
+
+        assertEquals(url, urlFromConfig);
+    }
+
+    @Test
     void getAndSetPort() {
         String port = "8081";
 
@@ -31,6 +47,18 @@ class APIConfigTest {
     }
 
     @Test
+    void getAndSetTemperature() {
+        double temperature = 0.5;
+
+        APIConfig config = new APIConfig();
+        config.setTemperature(temperature);
+
+        double temperatureOnConfig = config.getTemperature();
+
+        assertEquals(temperature, temperatureOnConfig);
+    }
+
+    @Test
     void getAndSetStreaming() {
         boolean streaming = false;
 
@@ -40,22 +68,6 @@ class APIConfigTest {
         boolean streamingOnConfig = config.getStreaming();
 
         assertEquals(streaming, streamingOnConfig);
-    }
-
-    @Test
-    void getFullUrlBuildsUrlWithPropertiesBeingSet() {
-        String protocol = "http";
-        String host = "localhost";
-        String port = "8089";
-        String endpoint = "v1/chat/completions";
-        String url = protocol + "://" + host + ":" + port + "/" + endpoint;
-
-        APIConfig config = new APIConfig();
-        config.setPort(port);
-
-        String urlFromConfig = config.getFullUrl();
-
-        assertEquals(url, urlFromConfig);
     }
 
 }

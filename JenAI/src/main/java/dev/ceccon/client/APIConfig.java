@@ -6,6 +6,7 @@ public class APIConfig {
     private String host = "localhost";
     private String port =  "8080";
     private String endpoint = "v1/chat/completions";
+    private double temperature = 0.0;
     private boolean streaming = true;
 
     private String model = "";
@@ -29,6 +30,14 @@ public class APIConfig {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public double getTemperature() {
+        return this.temperature;
     }
 
     public boolean getStreaming() {
