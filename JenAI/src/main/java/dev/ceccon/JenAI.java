@@ -74,6 +74,15 @@ public class JenAI {
                     System.out.println("Could not parse streaming response parameter. \nUsage: $ java -jar JenAI.jar -s <true|false>");
                     throw new IllegalArgumentException("Could not parse parameter.");
                 }
+            } else if (args[i].equals("-t")) {
+                try {
+                    Double temperature = Double.parseDouble(args[i+1]);
+                    apiConfig.setTemperature(temperature);
+                    i += 1;
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Could not parse temperature parameter. \nUsage: $ java -jar JenAI.jar -t <temperature>");
+                    throw new IllegalArgumentException("Could not parse parameter.");
+                }
             } else {
                 System.out.println("Could not recognize parameter '" + args[i] + "'.");
                 throw new IllegalArgumentException("Could not parse parameter.");
