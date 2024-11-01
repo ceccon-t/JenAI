@@ -52,6 +52,22 @@ If you are using ollama for the LLM server, you will have to at a minimum pass t
 
 `$ java -jar JenAI.jar -p 11434 -m llama3.1`
 
+## Command-line options
+
+Here is the list of command-line options available when starting the application:
+
+- `-p <port_number>`: Set the port where to reach the server, <port_number> must be an integer indicating a port in your machine with a LLM server listening. Defaults to 8080.
+
+- `-m <model_name>`: Specify the name of the model to be used, <model_name> must be a string. Necessary when using ollama as backend, has no effect when using llamafile.
+
+- `-c <path_to_conversation_json_file>`: Specify a conversation file from which to load the conversation. A conversation file is a JSON file containing the history of a conversation, it can be created within the application itself with the `(save)` command.
+
+- `-s <true|false>`: Specify if should run in streaming response mode or block response mode. Streaming response offers quicker feedback and a more familiar experience to those used to working with LLMs, but does not provide the metrics about token usage. Block response only returns any feedback after the model has finished producing the answer, but provides metrics about token usage. Deafults to true.
+
+- `-t <temperature>`: Specify the temperature to be used when generating an answer, the larger the temperature the more randomness it includes. <temperature> must be a decimal number, and usually fits in the [0.0-1.0) range. Make sure to use a dot (`.`) and not a comma to separate the parts of the number. Defaults to 0.0.
+
+These options are independent of each other, and can be combined as desired and in any order. Examples of using some of them can be found in section "How to run" of readme.
+
 ## How to build the project
 
 This is a simple Maven project, so the easiest way to build it is running `mvn clean package` in the JenAI folder (assuming Maven is installed - if not, check its site and install from there). A jar file containing everything the application needs to run will be created at `JenAI/target/JenAI-<VERSION>.jar`.
