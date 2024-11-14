@@ -6,7 +6,7 @@
 
 Simple CLI interface to chat with a local LLM.
 
-![Short conversation about Open Source and haiku creation between user and assistant](https://raw.githubusercontent.com/ceccon-t/JenAI/main/images/JenAI_v1-0-0_sc0.png "Short conversation about Open Source and haiku creation between user and assistant")
+![Short conversation about Open Source and haiku creation between user and assistant](https://raw.githubusercontent.com/ceccon-t/JenAI/main/images/JenAI_v1-7-0_sc0.png "Short conversation about Open Source and haiku creation between user and assistant")
 
 ## How to use
 
@@ -39,6 +39,9 @@ Example using a custom port (8888, in this case):
 By default the application uses streaming response, with new tokens being displayed as soon as they are produced. This provides quick feedback and is useful when working with bigger models, that might take several minutes to produce the entire response. However, it is also possible to run it using block responses, displaying the response only when its entirety has been produced by the model - the advantage of this is that it allows for calculating the prompt usage metrics, which can help get a sense of when a model is likely to start forgetting earlier messages. Example using block responses (`-s` option stands for streaming, can be set to `true` or `false`):
 
 `$ java -jar JenAI.jar -s false`
+
+![Conversation using block response and displaying token usage metrics](https://raw.githubusercontent.com/ceccon-t/JenAI/main/images/JenAI_v1-7-0_sc1.png "Conversation using block response and displaying token usage metrics")
+
 
 You can also start a conversation from a previously saved state (check `How to use` section for info about saving). For this, pass a `-c` option with the path from the current working directory to the json file that was saved (make sure to reference the JSON file, not the plain text one). Example:
 
