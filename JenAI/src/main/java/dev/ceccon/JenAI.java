@@ -2,7 +2,7 @@ package dev.ceccon;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ceccon.cli.CLISession;
-import dev.ceccon.client.APIConfig;
+import dev.ceccon.config.APIConfig;
 import dev.ceccon.client.LLMClient;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.storage.LocalFileStorage;

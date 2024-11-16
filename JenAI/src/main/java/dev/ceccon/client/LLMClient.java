@@ -6,6 +6,7 @@ import dev.ceccon.client.dtos.ResponseDTO;
 import dev.ceccon.client.dtos.StreamingResponseEventDTO;
 import dev.ceccon.client.response.BlockResponse;
 import dev.ceccon.client.response.StreamedResponse;
+import dev.ceccon.config.APIConfig;
 import dev.ceccon.conversation.Chat;
 
 import java.io.BufferedReader;

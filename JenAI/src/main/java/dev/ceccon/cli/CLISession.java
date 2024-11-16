@@ -1,6 +1,6 @@
 package dev.ceccon.cli;
 
-import dev.ceccon.client.APIConfig;
+import dev.ceccon.config.APIConfig;
 import dev.ceccon.client.LLMClient;
 import dev.ceccon.client.LLMSanitizer;
 import dev.ceccon.client.response.BlockResponse;

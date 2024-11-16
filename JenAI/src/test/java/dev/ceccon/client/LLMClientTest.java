@@ -2,6 +2,7 @@ package dev.ceccon.client;
 
 import dev.ceccon.client.response.BlockResponse;
 import dev.ceccon.client.response.StreamedResponse;
+import dev.ceccon.config.APIConfig;
 import dev.ceccon.conversation.Chat;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;

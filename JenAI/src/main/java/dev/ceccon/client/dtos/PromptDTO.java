@@ -1,6 +1,6 @@
 package dev.ceccon.client.dtos;
 
-import dev.ceccon.client.APIConfig;
+import dev.ceccon.config.APIConfig;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
 

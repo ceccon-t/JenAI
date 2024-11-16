@@ -1,4 +1,4 @@
-package dev.ceccon.client;
+package dev.ceccon.config;
 
 public class APIConfig {
 
