@@ -16,12 +16,10 @@ public class JenAI {
     private static APIConfig apiConfig = new APIConfig();
     private static Chat chat = Chat.initialize();
 
-    private static ObjectMapper mapper = new ObjectMapper();
-
     public static void main(String[] args) throws IOException {
 
         try {
-            parseArguments(args);
+            parseArguments(args, apiConfig, chat);
         } catch (IllegalArgumentException e) {
             return;
         }
@@ -33,7 +31,9 @@ public class JenAI {
         session.start();
     }
 
-    private static void parseArguments(String[] args) throws IllegalArgumentException {
+    private static void parseArguments(String[] args, APIConfig apiConfig, Chat chat) throws IllegalArgumentException {
+        ObjectMapper mapper = new ObjectMapper();
+
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-p")) {
                 try {
