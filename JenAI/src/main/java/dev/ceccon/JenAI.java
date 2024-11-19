@@ -31,7 +31,7 @@ public class JenAI {
         session.start();
     }
 
-    private static void parseArguments(String[] args, APIConfig apiConfig, Chat chat) throws IllegalArgumentException {
+    public static void parseArguments(String[] args, APIConfig apiConfig, Chat chat) throws IllegalArgumentException {
         ObjectMapper mapper = new ObjectMapper();
 
         for (int i = 0; i < args.length; i++) {
