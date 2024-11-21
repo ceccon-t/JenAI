@@ -41,4 +41,26 @@ class JenAITest {
         assertEquals(port, portOnApiConfig);
     }
 
+    @Test
+    void cliOptionModelWithoutValueThrowsException() {
+        String[] args = new String[]{"-m"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat());
+        });
+    }
+
+    @Test
+    void cliOptionsModelWithValueSetsModelParameterOnApiConfig() {
+        String model = "model";
+        String[] args = new String[]{"-m", model};
+
+        APIConfig apiConfig = new APIConfig();
+        JenAI.parseArguments(args, apiConfig, new Chat());
+
+        String modelOnApiConfig = apiConfig.getModel();
+
+        assertEquals(model, modelOnApiConfig);
+    }
+
 }
