@@ -63,4 +63,51 @@ class JenAITest {
         assertEquals(model, modelOnApiConfig);
     }
 
+    @Test
+    void cliOptionStreamingWithoutValueThrowsException() {
+        String[] args = new String[]{"-s"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat());
+        });
+    }
+
+    @Test
+    void cliOptionStreamingWithNonBooleanValueThrowsException() {
+        String streaming = "error";
+        String[] args = new String[]{"-s", streaming};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat());
+        });
+    }
+
+    @Test
+    void cliOptionStreamingWithTrueCausesStreamingOnAPIConfig() {
+        String streaming = "true";
+        String[] args = new String[]{"-s", streaming};
+
+        APIConfig apiConfig = new APIConfig();
+
+        JenAI.parseArguments(args, apiConfig, new Chat());
+
+        boolean streamingOnApiConfig = apiConfig.getStreaming();
+
+        assertEquals(Boolean.valueOf(streaming), streamingOnApiConfig);
+    }
+
+    @Test
+    void cliOptionStreamingWithFalseCausesNonStreamingOnAPIConfig() {
+        String streaming = "false";
+        String[] args = new String[]{"-s", streaming};
+
+        APIConfig apiConfig = new APIConfig();
+
+        JenAI.parseArguments(args, apiConfig, new Chat());
+
+        boolean streamingOnApiConfig = apiConfig.getStreaming();
+
+        assertEquals(Boolean.valueOf(streaming), streamingOnApiConfig);
+    }
+
 }
