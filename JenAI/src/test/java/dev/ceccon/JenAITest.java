@@ -5,7 +5,10 @@ import dev.ceccon.conversation.Chat;
 import dev.ceccon.storage.LocalFileStorage;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class JenAITest {
 
@@ -109,6 +112,44 @@ class JenAITest {
         boolean streamingOnApiConfig = apiConfig.getStreaming();
 
         assertEquals(Boolean.valueOf(streaming), streamingOnApiConfig);
+    }
+
+    @Test
+    void cliOptionChatWithoutValueThrowsException() {
+        String[] args = new String[]{"-c"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+        });
+    }
+
+    @Test
+    void cliOptionChatWithPathNotFoundThrowsException() throws IOException {
+        String pathNotFound = "notfound";
+        String[] args = new String[]{"-c", pathNotFound};
+
+        LocalFileStorage storage = mock(LocalFileStorage.class);
+        when(storage.load(pathNotFound)).thenThrow(IOException.class);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), storage);
+        });
+    }
+
+    @Test
+    void cliOptionChatWithPathFoundSetsInitialChat() throws IOException {
+        Chat chatToLoad = Chat.initialize("Initial chat");
+        String pathFound = "found";
+        String[] args = new String[]{"-c", pathFound};
+
+        LocalFileStorage storage = mock(LocalFileStorage.class);
+        when(storage.load(pathFound)).thenReturn(chatToLoad);
+
+        Chat chatLoaded = Chat.initialize();
+
+        JenAI.parseArguments(args, new APIConfig(), chatLoaded, storage);
+
+        assertEquals(chatToLoad.getMessages(), chatLoaded.getMessages());
     }
 
 }

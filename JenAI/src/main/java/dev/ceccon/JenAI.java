@@ -52,7 +52,8 @@ public class JenAI {
                 try {
                     String chatHistoryPathInput = args[i+1];
                     i += 1;
-                    chat = storage.load(chatHistoryPathInput);
+                    Chat loadedChat = storage.load(chatHistoryPathInput);
+                    chat.loadConversationState(loadedChat);
                 } catch (ArrayIndexOutOfBoundsException | IOException e) {
                     System.out.println("Could not parse chat history parameter. \nUsage: $ java -jar JenAI.jar -c <path_to_chat_json_file>");
                     throw new IllegalArgumentException("Could not parse parameter.");
