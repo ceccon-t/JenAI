@@ -10,11 +10,10 @@ import java.io.IOException;
 
 public class JenAI {
 
-    private static APIConfig apiConfig = new APIConfig();
-    private static Chat chat = Chat.initialize();
-
     public static void main(String[] args) throws IOException {
 
+        APIConfig apiConfig = new APIConfig();
+        Chat chat = Chat.initialize();
         LocalFileStorage storage = new LocalFileStorage();
         try {
             parseArguments(args, apiConfig, chat, storage);
