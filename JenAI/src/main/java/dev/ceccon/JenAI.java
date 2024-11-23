@@ -1,6 +1,5 @@
 package dev.ceccon;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ceccon.cli.CLISession;
 import dev.ceccon.config.APIConfig;
 import dev.ceccon.client.LLMClient;
@@ -8,8 +7,6 @@ import dev.ceccon.conversation.Chat;
 import dev.ceccon.storage.LocalFileStorage;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class JenAI {
 
@@ -18,22 +15,20 @@ public class JenAI {
 
     public static void main(String[] args) throws IOException {
 
+        LocalFileStorage storage = new LocalFileStorage();
         try {
-            parseArguments(args, apiConfig, chat);
+            parseArguments(args, apiConfig, chat, storage);
         } catch (IllegalArgumentException e) {
             return;
         }
 
         LLMClient llmClient = new LLMClient(apiConfig);
-        LocalFileStorage storage = new LocalFileStorage();
 
         CLISession session = new CLISession(chat, apiConfig, llmClient, storage);
         session.start();
     }
 
-    public static void parseArguments(String[] args, APIConfig apiConfig, Chat chat) throws IllegalArgumentException {
-        ObjectMapper mapper = new ObjectMapper();
-
+    public static void parseArguments(String[] args, APIConfig apiConfig, Chat chat, LocalFileStorage storage) throws IllegalArgumentException {
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-p")) {
                 try {
@@ -57,8 +52,7 @@ public class JenAI {
                 try {
                     String chatHistoryPathInput = args[i+1];
                     i += 1;
-                    Path filePath = Paths.get(chatHistoryPathInput.replace("\\", "/"));
-                    chat = mapper.readValue(filePath.toFile(), Chat.class);
+                    chat = storage.load(chatHistoryPathInput);
                 } catch (ArrayIndexOutOfBoundsException | IOException e) {
                     System.out.println("Could not parse chat history parameter. \nUsage: $ java -jar JenAI.jar -c <path_to_chat_json_file>");
                     throw new IllegalArgumentException("Could not parse parameter.");

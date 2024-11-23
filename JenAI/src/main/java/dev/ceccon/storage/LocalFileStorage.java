@@ -30,6 +30,11 @@ public class LocalFileStorage {
         return Paths.get(baseFolder).toAbsolutePath().normalize().toString();
     }
 
+    public Chat load(String filePath) throws IOException {
+        Path path = Paths.get(filePath.replace("\\", "/"));
+        return mapper.readValue(path.toFile(), Chat.class);
+    }
+
     public void save(Chat chat, String chosenFilename) throws IOException {
         ensureBaseFolderExists();
 

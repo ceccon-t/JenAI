@@ -2,6 +2,7 @@ package dev.ceccon;
 
 import dev.ceccon.config.APIConfig;
 import dev.ceccon.conversation.Chat;
+import dev.ceccon.storage.LocalFileStorage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ class JenAITest {
         String[] args = new String[]{"-p"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
         });
     }
 
@@ -23,7 +24,7 @@ class JenAITest {
         String[] args = new String[]{"-p", port};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
         });
     }
 
@@ -34,7 +35,7 @@ class JenAITest {
 
         APIConfig apiConfig = new APIConfig();
 
-        JenAI.parseArguments(args, apiConfig, new Chat());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
 
         String portOnApiConfig = apiConfig.getPort();
 
@@ -46,7 +47,7 @@ class JenAITest {
         String[] args = new String[]{"-m"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
         });
     }
 
@@ -56,7 +57,7 @@ class JenAITest {
         String[] args = new String[]{"-m", model};
 
         APIConfig apiConfig = new APIConfig();
-        JenAI.parseArguments(args, apiConfig, new Chat());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
 
         String modelOnApiConfig = apiConfig.getModel();
 
@@ -68,7 +69,7 @@ class JenAITest {
         String[] args = new String[]{"-s"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
         });
     }
 
@@ -78,7 +79,7 @@ class JenAITest {
         String[] args = new String[]{"-s", streaming};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
         });
     }
 
@@ -89,7 +90,7 @@ class JenAITest {
 
         APIConfig apiConfig = new APIConfig();
 
-        JenAI.parseArguments(args, apiConfig, new Chat());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
 
         boolean streamingOnApiConfig = apiConfig.getStreaming();
 
@@ -103,7 +104,7 @@ class JenAITest {
 
         APIConfig apiConfig = new APIConfig();
 
-        JenAI.parseArguments(args, apiConfig, new Chat());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
 
         boolean streamingOnApiConfig = apiConfig.getStreaming();
 
