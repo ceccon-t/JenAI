@@ -152,4 +152,60 @@ class JenAITest {
         assertEquals(chatToLoad.getMessages(), chatLoaded.getMessages());
     }
 
+    @Test
+    void cliOptionTemperatureWithoutValueThrowsException() {
+        String[] args = new String[]{"-t"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+        });
+    }
+
+    @Test
+    void cliOptionTemperatureWithNonNumericValueThrowsException() {
+        String temperature = "temperature";
+        String[] args = new String[]{"-t", temperature};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+        });
+    }
+
+    @Test
+    void cliOptionTemperatureWithWholeNumberSetsTemperatureOnApiConfig() {
+        String temperature = "5";
+        String[] args = new String[]{"-t", temperature};
+
+        APIConfig apiConfig = new APIConfig();
+
+        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
+
+        double temperatureOnApiConfig = apiConfig.getTemperature();
+
+        assertEquals(Double.valueOf(temperature), temperatureOnApiConfig);
+    }
+
+    @Test
+    void cliOptionTemperatureWithDecimalNumberSetsTemperatureOnApiConfig() {
+        String temperature = "0.5";
+        String[] args = new String[]{"-t", temperature};
+
+        APIConfig apiConfig = new APIConfig();
+
+        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
+
+        double temperatureOnApiConfig = apiConfig.getTemperature();
+
+        assertEquals(Double.valueOf(temperature), temperatureOnApiConfig);
+    }
+
+    @Test
+    void cliOptionInexistentThrowsException() {
+        String[] args = new String[]{"-thisisnotanoption"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+        });
+    }
+
 }
