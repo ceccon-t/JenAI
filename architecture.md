@@ -26,13 +26,17 @@ The most relevant packages are described below.
 
 Classes under the `conversation` package serve to model the history of a conversation, and are in general very simple. They mostly offer ways to read the history and to add new messages to the history. In particular, `Message` was well-suited to being a simple record, while `Chat` keeps a list of messages that represent the entire conversation and an utility method to add a new message to the end of the history (effectively making it the most recent one).
 
+#### Config
+
+Classes that manage the configuration of the application. `AppConfig` is the main wrapper around all configuration classes, while `APIConfig` stores the configuration for the API.
+
 #### CLI
 
 There is only one class under the `cli` package, but it is an important one. Its role is to manage the state of the conversation by manipulating objects of the classes under the `conversation` package based on input from the user (through a command-line interface) and from the LLM (through API call responses). This is probably the best place to start in order to understand how everything fits together.
 
 #### Client
 
-Classes under the `client` package handle the interaction with the LLM server through its API. Another axiom of the project was that it would only work with local LLMs, so only the port to which requests are sent is configurable - the host is always hardcoded as `localhost`. `LLMClient` is responsible for making the requests and returning the responses in a format that the rest of the application can work with. `APIConfig` stores the configuration for the API, while `LLMSanitizer` offers some helper methods to remove problematic characters and special tokens from messages.
+Classes under the `client` package handle the interaction with the LLM server through its API. Another axiom of the project was that it would only work with local LLMs, so only the port to which requests are sent is configurable - the host is always hardcoded as `localhost`. `LLMClient` is responsible for making the requests and returning the responses in a format that the rest of the application can work with. `LLMSanitizer` offers some helper methods to remove problematic characters and special tokens from messages.
 
 ##### DTOs
 
@@ -44,7 +48,7 @@ Classes that model the two types of responses that application works with: block
 
 ### Storage
 
-Helper classes to handle saving conversations.
+Helper classes to handle saving and loading conversations.
 
 ## Automated Tests
 
@@ -62,6 +66,8 @@ The script that defines the main workflow can be found under `.github/workflows/
 
 
 ## Libraries and Frameworks
+
+[JCommander](https://jcommander.org/) for parsing command line options.
 
 [Maven](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html) as a build automation tool.
 

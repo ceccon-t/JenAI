@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Refactored configuration classes into new package
+- Use JCommander library to parse command line options
+
 ### Deprecated
 
 ### Removed
@@ -32,13 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Option to use streaming response
-
 - First unit tests
 
 ### Changed
 
 - Use more suitable exception when command line arguments are invalid
-
 - Internal refactor: encapsulate DTO classes on client package
 
 
