@@ -81,6 +81,11 @@ public class LLMSanitizer {
 
         sanitized = sanitized.replaceAll("–", "-");
 
+        sanitized = sanitized.replaceAll("’", "'");
+        sanitized = sanitized.replaceAll("‘", "'");
+        sanitized = sanitized.replaceAll("“", "\"");
+        sanitized = sanitized.replaceAll("”", "\"");
+
         return sanitized;
     }
 }

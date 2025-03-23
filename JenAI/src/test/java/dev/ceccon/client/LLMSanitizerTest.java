@@ -172,4 +172,21 @@ class LLMSanitizerTest {
         assertEquals(sanitizedDashes, safeVersionDashes);
     }
 
+    @Test
+    void sanitizesForChatSanitizesQuotes() {
+        String problemVersionSingleQuotes = "’‘";
+        String safeVersionSingleQuotes = "''";
+
+        String sanitizedSingleQuotes = LLMSanitizer.sanitizeForChat(problemVersionSingleQuotes);
+
+        assertEquals(safeVersionSingleQuotes, sanitizedSingleQuotes);
+
+        String problemVersionDoubleQuotes = "“”";
+        String safeVersionDoubleQuotes = "\"\"";
+
+        String sanitizedDoubleQuotes = LLMSanitizer.sanitizeForChat(problemVersionDoubleQuotes);
+
+        assertEquals(sanitizedDoubleQuotes, safeVersionDoubleQuotes);
+    }
+
 }

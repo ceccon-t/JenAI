@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Sanitizes one more variation of upper case A
+- Sanitizes variations of single and double quotes
+
 ### Security
 
 
