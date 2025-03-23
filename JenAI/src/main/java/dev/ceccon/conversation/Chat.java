@@ -1,5 +1,7 @@
 package dev.ceccon.conversation;
 
+import dev.ceccon.client.LLMSanitizer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class Chat {
 
     public void loadConversationState(Chat otherChat) {
         this.messages = new ArrayList<>();
-        otherChat.getMessages().forEach(m -> this.messages.add(m));
+        otherChat.getMessages().forEach(m -> this.messages.add(new Message(m.role(), LLMSanitizer.sanitizeForChat(m.content()))));
     }
 
 }
