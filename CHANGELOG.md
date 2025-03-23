@@ -5,24 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - YYYY-MM-DD
-
-### Added
+## [1.7.2] - 2025-03-22
 
 ### Changed
 
 - Sanitizes existing chat messages when loading from previous state
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Sanitizes one more variation of upper case A
 - Sanitizes variations of single and double quotes
-
-### Security
 
 
 ## [1.7.1] - 2024-11-30
