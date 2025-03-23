@@ -22,6 +22,7 @@ public class LLMSanitizer {
         sanitized = sanitized.replaceAll("Á", "A");
         sanitized = sanitized.replaceAll("À", "A");
         sanitized = sanitized.replaceAll("Â", "A");
+        sanitized = sanitized.replaceAll("Ä", "A");
         sanitized = sanitized.replaceAll("Ã", "A");
 
         sanitized = sanitized.replaceAll("é", "e");
