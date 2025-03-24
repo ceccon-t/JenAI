@@ -164,8 +164,8 @@ class LLMSanitizerTest {
 
         assertEquals(safeVersionSpanishStarters, sanitizedSpanishStarters);
 
-        String problemVersionDashes = "–";
-        String safeVersionDashes = "-";
+        String problemVersionDashes = "–—";
+        String safeVersionDashes = "--";
 
         String sanitizedDashes = LLMSanitizer.sanitizeForChat(problemVersionDashes);
 
