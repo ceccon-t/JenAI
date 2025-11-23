@@ -18,15 +18,15 @@ public class LocalFileStorage {
     private String baseFolder = "./jenai_chats/";
     private ObjectMapper mapper = new ObjectMapper();
 
-    public String getBaseFolder() {
+    private String getBaseFolder() {
         return this.baseFolder;
     }
 
-    public void setBaseFolder(String baseFolder) {
+    private void setBaseFolder(String baseFolder) {
         this.baseFolder = baseFolder;
     }
 
-    public String getAbsoluteBaseFolder() {
+    private String getAbsoluteBaseFolder() {
         return Paths.get(baseFolder).toAbsolutePath().normalize().toString();
     }
 
@@ -36,6 +36,7 @@ public class LocalFileStorage {
     }
 
     public void save(Chat chat, String chosenFilename) throws IOException {
+        System.out.println("Attempting to save conversation to " + getAbsoluteBaseFolder());
         ensureBaseFolderExists();
 
         chosenFilename = chosenFilename.trim();

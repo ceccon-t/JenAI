@@ -84,7 +84,7 @@ public class CLISession {
     }
 
     private void save(String userInput) {
-        String resultMessage = "Conversation saved to " + storage.getAbsoluteBaseFolder();
+        String resultMessage = "Conversation saved.";
         try {
             String filename = userInput.replace(SAVE_COMMAND, "").trim();
             storage.save(chat, filename);
