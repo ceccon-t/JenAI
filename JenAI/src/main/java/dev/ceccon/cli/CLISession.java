@@ -9,7 +9,7 @@ import dev.ceccon.client.response.StreamedResponse;
 import dev.ceccon.client.response.UsageMetrics;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.conversation.Message;
-import dev.ceccon.storage.LocalFileStorage;
+import dev.ceccon.storage.Storage;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -24,9 +24,9 @@ public class CLISession {
 
     private APIConfig apiConfig;
     private LLMClient llmClient;
-    private LocalFileStorage storage;
+    private Storage storage;
 
-    public CLISession(Chat chat, APIConfig apiConfig, LLMClient llmClient, LocalFileStorage storage) {
+    public CLISession(Chat chat, APIConfig apiConfig, LLMClient llmClient, Storage storage) {
         this.chat = chat;
         this.apiConfig = apiConfig;
         this.llmClient = llmClient;

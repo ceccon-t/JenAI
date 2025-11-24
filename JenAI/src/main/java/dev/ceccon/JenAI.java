@@ -7,6 +7,8 @@ import dev.ceccon.cli.CLISession;
 import dev.ceccon.config.APIConfig;
 import dev.ceccon.client.LLMClient;
 import dev.ceccon.conversation.Chat;
+import dev.ceccon.storage.CompositeStorage;
+import dev.ceccon.storage.DatabaseStorage;
 import dev.ceccon.storage.LocalFileStorage;
 
 import java.io.IOException;
@@ -17,7 +19,7 @@ public class JenAI {
 
         APIConfig apiConfig = new APIConfig();
         Chat chat = Chat.initialize();
-        LocalFileStorage storage = new LocalFileStorage();
+        CompositeStorage storage = new CompositeStorage();
         try {
             parseArguments(args, apiConfig, chat, storage);
         } catch (IllegalArgumentException e) {
@@ -30,7 +32,7 @@ public class JenAI {
         session.start();
     }
 
-    public static void parseArguments(String[] args, APIConfig apiConfig, Chat chat, LocalFileStorage storage) throws IllegalArgumentException {
+    public static void parseArguments(String[] args, APIConfig apiConfig, Chat chat, CompositeStorage storage) throws IllegalArgumentException {
         JenAIArgs jenAIArgs = new JenAIArgs();
         JCommander cmd = JCommander.newBuilder()
                 .addObject(jenAIArgs)
@@ -71,6 +73,12 @@ public class JenAI {
         if (jenAIArgs.hasTemperature()) {
             Double temperature = jenAIArgs.getTemperature();
             apiConfig.setTemperature(temperature);
+        }
+
+        storage.addStorage(new LocalFileStorage());
+        if (jenAIArgs.hasDatabaseEnabled()) {
+            DatabaseStorage databaseStorage = new DatabaseStorage();
+            storage.addStorage(databaseStorage);
         }
     }
 
@@ -115,6 +123,14 @@ public class JenAI {
         )
         private Double temperature;
 
+        @Parameter(
+                names = {"-d", "--databaseEnabled"},
+                description = "Enable using database for persistence (file saving is not impacted)",
+                required = false,
+                arity = 1
+        )
+        private Boolean databaseEnabled;
+
         public Integer getPort() {
             return port;
         }
@@ -133,6 +149,10 @@ public class JenAI {
 
         public Double getTemperature() {
             return temperature;
+        }
+
+        public Boolean getDatabaseEnabled() {
+            return databaseEnabled;
         }
 
         public boolean hasPort() {
@@ -154,6 +174,11 @@ public class JenAI {
         public boolean hasTemperature() {
             return temperature != null;
         }
+
+        public boolean hasDatabaseEnabled() {
+            return databaseEnabled != null;
+        }
+
     }
 
 }

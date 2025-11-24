@@ -13,7 +13,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class LocalFileStorage {
+public class LocalFileStorage implements Storage{
 
     private String baseFolder = "./jenai_chats/";
     private ObjectMapper mapper = new ObjectMapper();
@@ -30,11 +30,13 @@ public class LocalFileStorage {
         return Paths.get(baseFolder).toAbsolutePath().normalize().toString();
     }
 
+    @Override
     public Chat load(String filePath) throws IOException {
         Path path = Paths.get(filePath.replace("\\", "/"));
         return mapper.readValue(path.toFile(), Chat.class);
     }
 
+    @Override
     public void save(Chat chat, String chosenFilename) throws IOException {
         System.out.println("Attempting to save conversation to " + getAbsoluteBaseFolder());
         ensureBaseFolderExists();

@@ -2,6 +2,7 @@ package dev.ceccon;
 
 import dev.ceccon.config.APIConfig;
 import dev.ceccon.conversation.Chat;
+import dev.ceccon.storage.CompositeStorage;
 import dev.ceccon.storage.LocalFileStorage;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class JenAITest {
         String[] args = new String[]{"-p"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
@@ -27,7 +28,7 @@ class JenAITest {
         String[] args = new String[]{"-p", port};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
@@ -38,7 +39,7 @@ class JenAITest {
 
         APIConfig apiConfig = new APIConfig();
 
-        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new CompositeStorage());
 
         String portOnApiConfig = apiConfig.getPort();
 
@@ -50,7 +51,7 @@ class JenAITest {
         String[] args = new String[]{"-m"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
@@ -60,7 +61,7 @@ class JenAITest {
         String[] args = new String[]{"-m", model};
 
         APIConfig apiConfig = new APIConfig();
-        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new CompositeStorage());
 
         String modelOnApiConfig = apiConfig.getModel();
 
@@ -72,7 +73,7 @@ class JenAITest {
         String[] args = new String[]{"-s"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
@@ -82,7 +83,7 @@ class JenAITest {
         String[] args = new String[]{"-s", streaming};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
@@ -93,7 +94,7 @@ class JenAITest {
 
         APIConfig apiConfig = new APIConfig();
 
-        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new CompositeStorage());
 
         boolean streamingOnApiConfig = apiConfig.getStreaming();
 
@@ -107,7 +108,7 @@ class JenAITest {
 
         APIConfig apiConfig = new APIConfig();
 
-        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new CompositeStorage());
 
         boolean streamingOnApiConfig = apiConfig.getStreaming();
 
@@ -119,7 +120,7 @@ class JenAITest {
         String[] args = new String[]{"-c"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
@@ -128,7 +129,7 @@ class JenAITest {
         String pathNotFound = "notfound";
         String[] args = new String[]{"-c", pathNotFound};
 
-        LocalFileStorage storage = mock(LocalFileStorage.class);
+        CompositeStorage storage = mock(CompositeStorage.class);
         when(storage.load(pathNotFound)).thenThrow(IOException.class);
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -142,7 +143,7 @@ class JenAITest {
         String pathFound = "found";
         String[] args = new String[]{"-c", pathFound};
 
-        LocalFileStorage storage = mock(LocalFileStorage.class);
+        CompositeStorage storage = mock(CompositeStorage.class);
         when(storage.load(pathFound)).thenReturn(chatToLoad);
 
         Chat chatLoaded = Chat.initialize();
@@ -157,7 +158,7 @@ class JenAITest {
         String[] args = new String[]{"-t"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
@@ -167,7 +168,7 @@ class JenAITest {
         String[] args = new String[]{"-t", temperature};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
@@ -178,7 +179,7 @@ class JenAITest {
 
         APIConfig apiConfig = new APIConfig();
 
-        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new CompositeStorage());
 
         double temperatureOnApiConfig = apiConfig.getTemperature();
 
@@ -192,7 +193,7 @@ class JenAITest {
 
         APIConfig apiConfig = new APIConfig();
 
-        JenAI.parseArguments(args, apiConfig, new Chat(), new LocalFileStorage());
+        JenAI.parseArguments(args, apiConfig, new Chat(), new CompositeStorage());
 
         double temperatureOnApiConfig = apiConfig.getTemperature();
 
@@ -204,7 +205,7 @@ class JenAITest {
         String[] args = new String[]{"-thisisnotanoption"};
 
         assertThrows(IllegalArgumentException.class, () -> {
-            JenAI.parseArguments(args, new APIConfig(), new Chat(), new LocalFileStorage());
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
         });
     }
 
