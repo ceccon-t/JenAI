@@ -3,19 +3,39 @@ package dev.ceccon.storage;
 import dev.ceccon.conversation.Chat;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DatabaseStorage implements Storage {
 
+    private String port;
     private String username;
     private String password;
 
-    public DatabaseStorage(String username, String password) {
+    public DatabaseStorage(String port, String username, String password) {
+        this.port = port;
         this.username = username;
         this.password = password;
+
+        try {
+            Connection conn = getConnection();
+            System.out.println("Connected successfully to Postgres database.");
+        } catch (SQLException e) {
+            System.out.println("Error trying to connect to database...");
+        }
     }
 
     public DatabaseStorage() {
-        this("", "");
+        this("", "", "");
+    }
+
+    private Connection getConnection() throws SQLException {
+        String host = "localhost";
+        String databaseName = "jenai";
+        String url = "jdbc:postgresql://" + host + ":" + port + "/" + databaseName;
+
+        return DriverManager.getConnection(url, username, password);
     }
 
     @Override
