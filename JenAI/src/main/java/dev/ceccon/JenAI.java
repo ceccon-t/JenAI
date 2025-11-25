@@ -77,7 +77,9 @@ public class JenAI {
 
         storage.addStorage(new LocalFileStorage());
         if (jenAIArgs.hasDatabaseEnabled()) {
-            DatabaseStorage databaseStorage = new DatabaseStorage();
+            String username = jenAIArgs.hasDatabaseUsername() ? jenAIArgs.getDatabaseUsername() : "";
+            String password = jenAIArgs.hasDatabasePassword() ? jenAIArgs.getDatabasePassword() : "";
+            DatabaseStorage databaseStorage = new DatabaseStorage(username, password);
             storage.addStorage(databaseStorage);
         }
     }
@@ -131,6 +133,22 @@ public class JenAI {
         )
         private Boolean databaseEnabled;
 
+        @Parameter (
+                names = {"-u", "--databaseUsername"},
+                description = "Username for login in database",
+                required = false,
+                arity = 1
+        )
+        private String databaseUsername;
+
+        @Parameter(
+                names = {"-w", "--databasePassword"},
+                description = "Password for login in database",
+                required = false,
+                arity = 1
+        )
+        private String databasePassword;
+
         public Integer getPort() {
             return port;
         }
@@ -155,6 +173,14 @@ public class JenAI {
             return databaseEnabled;
         }
 
+        public String getDatabaseUsername() {
+            return databaseUsername;
+        }
+
+        public String getDatabasePassword() {
+            return databasePassword;
+        }
+
         public boolean hasPort() {
             return port != null;
         }
@@ -177,6 +203,14 @@ public class JenAI {
 
         public boolean hasDatabaseEnabled() {
             return databaseEnabled != null;
+        }
+
+        public boolean hasDatabaseUsername() {
+            return databaseUsername != null;
+        }
+
+        public boolean hasDatabasePassword() {
+            return databasePassword != null;
         }
 
     }
