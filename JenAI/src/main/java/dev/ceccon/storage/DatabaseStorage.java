@@ -1,17 +1,23 @@
 package dev.ceccon.storage;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ceccon.conversation.Chat;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseStorage implements Storage {
 
+    private ObjectMapper mapper = new ObjectMapper();
+
     private String port;
     private String username;
     private String password;
+
+    private Connection conn;
 
     public DatabaseStorage(String port, String username, String password) {
         this.port = port;
@@ -19,7 +25,7 @@ public class DatabaseStorage implements Storage {
         this.password = password;
 
         try {
-            Connection conn = getConnection();
+            conn = getConnection();
             System.out.println("Connected successfully to Postgres database.");
         } catch (SQLException e) {
             System.out.println("Error trying to connect to database...");
@@ -45,7 +51,22 @@ public class DatabaseStorage implements Storage {
 
     @Override
     public void save(Chat chat, String chosenIdentifier) throws IOException {
+        String sql = """
+            INSERT INTO chats 
+                (name, content)
+            VALUES
+                (?, ?)
+        """;
 
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, chosenIdentifier);
+            statement.setString(2, mapper.writeValueAsString(chat));
+
+            statement.execute();
+        } catch (SQLException e) {
+            System.out.println("Error while trying to save chat '" + chosenIdentifier + "': " + e);
+            e.printStackTrace();
+        }
     }
 
     public String getUsername() {
