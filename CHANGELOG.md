@@ -11,9 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Connection to local database
 - Command line parameters to configure connection to local database (-d for database enabled, -r for database port, -u for database username, -w for database password)
-- Save command also adds entry to database
+- Load command
 
 ### Changed
+
+- Save command now also adds entry to database
 
 ### Deprecated
 
