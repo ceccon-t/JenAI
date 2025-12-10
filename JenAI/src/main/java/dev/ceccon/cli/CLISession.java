@@ -18,6 +18,7 @@ public class CLISession {
 
     private static final String EXIT_COMMAND = "(exit)";
     private static final String SAVE_COMMAND = "(save)";
+    private static final String LOAD_COMMAND = "(load)";
 
     private Chat chat;
     private Scanner sc = new Scanner(System.in);
@@ -46,6 +47,7 @@ public class CLISession {
             userInput = getUserInput();
             if (userInput.equals(EXIT_COMMAND)) break;
             if (userInput.startsWith(SAVE_COMMAND)) { save(userInput); continue; }
+            if (userInput.startsWith(LOAD_COMMAND)) { load(userInput); continue; }
 
             userMessage = LLMSanitizer.sanitizeForChat(userInput);
             chat.addMessage(
@@ -92,6 +94,15 @@ public class CLISession {
             resultMessage = "Error when trying to save...";
         }
         System.out.println(resultMessage);
+    }
+
+    private void load(String userInput) {
+        try {
+            String identifier = userInput.replace(LOAD_COMMAND, "").trim();
+            storage.load(identifier);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void printInstructions() {

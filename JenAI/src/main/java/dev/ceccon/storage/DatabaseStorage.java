@@ -46,6 +46,7 @@ public class DatabaseStorage implements Storage {
 
     @Override
     public Chat load(String fileIdentifier) throws IOException {
+        System.out.println("Trying to load '" + fileIdentifier + "'");
         return null;
     }
 
