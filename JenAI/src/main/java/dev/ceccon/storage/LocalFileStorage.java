@@ -32,7 +32,18 @@ public class LocalFileStorage implements Storage{
 
     @Override
     public Chat load(String filePath) throws IOException {
+        // From absolute value
         Path path = Paths.get(filePath.replace("\\", "/"));
+        if (Files.exists(path)) return readChatFromFile(path);
+
+        // From relative to base folder
+        path = Paths.get(baseFolder + filePath.replace("\\", "/") + ".json");
+        if (Files.exists(path)) return readChatFromFile(path);
+
+        return null;
+    }
+
+    private Chat readChatFromFile(Path path) throws IOException {
         return mapper.readValue(path.toFile(), Chat.class);
     }
 

@@ -16,11 +16,11 @@ public class CompositeStorage implements Storage {
         for (Storage storage : storages) {
             try {
                 chat = storage.load(fileIdentifier);
-                return chat;
+                if (chat != null) return chat;
             } catch (IOException e) {
             }
         }
-        throw new IOException("Could find chat " + fileIdentifier);
+        throw new IOException("Could not find chat " + fileIdentifier);
     }
 
     @Override

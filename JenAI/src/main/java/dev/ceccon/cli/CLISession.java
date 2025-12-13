@@ -35,8 +35,7 @@ public class CLISession {
     }
 
     public void start() throws IOException {
-        printInstructions();
-        recapChatHistory();
+        initializeChatSessionDisplay();
         String userInput = "";
         String userMessage = "";
         String assistantMessage = "";
@@ -81,6 +80,11 @@ public class CLISession {
         System.out.println("\nBye!");
     }
 
+    private void initializeChatSessionDisplay() {
+        printInstructions();
+        recapChatHistory();
+    }
+
     private boolean usingStreaming() {
         return apiConfig.getStreaming();
     }
@@ -99,7 +103,11 @@ public class CLISession {
     private void load(String userInput) {
         try {
             String identifier = userInput.replace(LOAD_COMMAND, "").trim();
-            storage.load(identifier);
+            Chat loadedChat = storage.load(identifier);
+            if (loadedChat != null) {
+                chat = loadedChat;
+                initializeChatSessionDisplay();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
