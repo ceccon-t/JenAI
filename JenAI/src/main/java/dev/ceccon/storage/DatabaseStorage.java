@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ceccon.conversation.Chat;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DatabaseStorage implements Storage {
 
@@ -45,9 +42,28 @@ public class DatabaseStorage implements Storage {
     }
 
     @Override
-    public Chat load(String fileIdentifier) throws IOException {
-        System.out.println("Trying to load '" + fileIdentifier + "'");
-        return null;
+    public Chat load(String chatName) throws IOException {
+        System.out.println("Trying to load '" + chatName + "'");
+        String sql = """
+                SELECT * FROM chats
+                    WHERE
+                    name = ?
+        """;
+
+        Chat chat = null;
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, chatName);
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String content = rs.getString("content");
+                chat = mapper.readValue(content, Chat.class);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while trying to load chat '" + chatName + "': " + e);
+            e.printStackTrace();
+        }
+        return chat;
     }
 
     @Override
