@@ -68,16 +68,27 @@ public class DatabaseStorage implements Storage {
 
     @Override
     public void save(Chat chat, String chosenIdentifier) throws IOException {
-        String sql = """
-            INSERT INTO chats 
-                (name, content)
-            VALUES
-                (?, ?)
-        """;
+        String sql;
+
+        Chat existing = load(chosenIdentifier);
+        if (existing != null) {
+            sql = """
+                UPDATE chats
+                SET content=?
+                WHERE name=? 
+            """;
+        } else {
+            sql = """
+                INSERT INTO chats 
+                    (content, name)
+                VALUES
+                    (?, ?)
+            """;
+        }
 
         try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setString(1, chosenIdentifier);
-            statement.setString(2, mapper.writeValueAsString(chat));
+            statement.setString(1, mapper.writeValueAsString(chat));
+            statement.setString(2, chosenIdentifier);
 
             statement.execute();
         } catch (SQLException e) {
