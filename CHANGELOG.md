@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Save command now also adds entry to database
+- Save command updates database entry when using same name
+- Load command supports both absolute path and path relative from base folder
 
 ### Deprecated
 
