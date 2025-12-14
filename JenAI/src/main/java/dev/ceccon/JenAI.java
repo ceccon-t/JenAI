@@ -54,17 +54,6 @@ public class JenAI {
             apiConfig.setModel(model);
         }
 
-        if (jenAIArgs.hasChat()) {
-            try {
-                String chatHistoryPathInput = jenAIArgs.getChat();
-                Chat loadedChat = storage.load(chatHistoryPathInput);
-                chat.loadConversationState(loadedChat);
-            } catch (IOException e) {
-                System.out.println("Could not parse chat history parameter. \nUsage: $ java -jar JenAI.jar -c <path_to_chat_json_file>");
-                throw new IllegalArgumentException("Could not parse parameter.");
-            }
-        }
-
         if (jenAIArgs.hasStreaming()) {
             boolean useStreamingResponse = jenAIArgs.getStreaming();
             apiConfig.setStreaming(useStreamingResponse);
@@ -83,6 +72,18 @@ public class JenAI {
             DatabaseStorage databaseStorage = new DatabaseStorage(port, username, password);
             storage.addStorage(databaseStorage);
         }
+
+        if (jenAIArgs.hasChat()) {
+            try {
+                String chatHistoryPathInput = jenAIArgs.getChat();
+                Chat loadedChat = storage.load(chatHistoryPathInput);
+                chat.loadConversationState(loadedChat);
+            } catch (IOException e) {
+                System.out.println("Could not parse chat history parameter. \nUsage: $ java -jar JenAI.jar -c <path_to_chat_json_file>");
+                throw new IllegalArgumentException("Could not parse parameter.");
+            }
+        }
+
     }
 
     static class JenAIArgs {
