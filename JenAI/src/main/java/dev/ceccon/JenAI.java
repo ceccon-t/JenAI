@@ -66,10 +66,12 @@ public class JenAI {
 
         storage.addStorage(new LocalFileStorage());
         if (jenAIArgs.hasDatabaseEnabled()) {
+            String dbEngine = jenAIArgs.hasDatabaseEngine() ? jenAIArgs.getDatabaseEngine() : "sqlite";
             String port = jenAIArgs.hasDatabasePort() ? jenAIArgs.getDatabasePort() : "";
             String username = jenAIArgs.hasDatabaseUsername() ? jenAIArgs.getDatabaseUsername() : "";
             String password = jenAIArgs.hasDatabasePassword() ? jenAIArgs.getDatabasePassword() : "";
-            DatabaseStorage databaseStorage = new DatabaseStorage(port, username, password);
+            String databaseName = dbEngine.equals("sqlite") ? "jenai.db" : "jenai";
+            DatabaseStorage databaseStorage = new DatabaseStorage(dbEngine, port, username, password, databaseName);
             storage.addStorage(databaseStorage);
         }
 
@@ -136,6 +138,14 @@ public class JenAI {
         private Boolean databaseEnabled;
 
         @Parameter(
+                names = {"-e", "--databaseEngine"},
+                description = "Determines which database is used (one of [postgres|sqlite])",
+                required = false,
+                arity = 1
+        )
+        private String databaseEngine;
+
+        @Parameter(
                 names = {"-r", "--databasePort"},
                 description = "Port where to connect to database",
                 required = false,
@@ -183,6 +193,8 @@ public class JenAI {
             return databaseEnabled;
         }
 
+        public String getDatabaseEngine() { return databaseEngine; }
+
         public String getDatabasePort() {
             return databasePort;
         }
@@ -218,6 +230,8 @@ public class JenAI {
         public boolean hasDatabaseEnabled() {
             return databaseEnabled != null;
         }
+
+        public boolean hasDatabaseEngine() { return databaseEngine != null; }
 
         public boolean hasDatabasePort() {
             return databasePort != null;

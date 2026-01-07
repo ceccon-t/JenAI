@@ -4,41 +4,96 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ceccon.conversation.Chat;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 
 public class DatabaseStorage implements Storage {
 
     private ObjectMapper mapper = new ObjectMapper();
 
+    private String databaseEngine;
     private String port;
     private String username;
     private String password;
+    private String databaseName;
 
     private Connection conn;
 
-    public DatabaseStorage(String port, String username, String password) {
+    public DatabaseStorage(String databaseEngine, String port, String username, String password, String databaseName) {
+        this.databaseEngine = databaseEngine;
         this.port = port;
         this.username = username;
         this.password = password;
+        this.databaseName = databaseName;
 
         try {
             conn = getConnection();
-            System.out.println("Connected successfully to Postgres database.");
+            System.out.println("Connected to database.");
+            setupDatabase();
         } catch (SQLException e) {
             System.out.println("Error trying to connect to database...");
         }
     }
 
     public DatabaseStorage() {
-        this("", "", "");
+        this("", "", "", "", "");
     }
 
     private Connection getConnection() throws SQLException {
-        String host = "localhost";
-        String databaseName = "jenai";
-        String url = "jdbc:postgresql://" + host + ":" + port + "/" + databaseName;
+        String url;
 
-        return DriverManager.getConnection(url, username, password);
+        switch (databaseEngine) {
+            case "sqlite":
+                String dbFilepath = "jenai_chats/";
+                Path folder = Paths.get(dbFilepath);
+                try {
+                    Files.createDirectories(folder);
+                } catch (IOException e) {
+                    throw new RuntimeException("Could not ensure database file for sqlite db existed: " + dbFilepath);
+                }
+                url = "jdbc:sqlite:" + dbFilepath + databaseName;
+                return DriverManager.getConnection(url);
+            case "postgres":
+                String host = "localhost";
+                url = "jdbc:postgresql://" + host + ":" + port + "/" + databaseName;;
+                return DriverManager.getConnection(url, username, password);
+            default:
+                throw new RuntimeException("Database engine not supported: " + databaseEngine);
+        }
+    }
+
+    private void setupDatabase() throws SQLException {
+        String ensureExistsQuerySqlite = """
+                CREATE TABLE IF NOT EXISTS chats (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    uid TEXT DEFAULT (lower(hex(randomblob(16)))) NULL,
+                    "name" TEXT NOT NULL,
+                    "content" TEXT NULL,
+                    tags TEXT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
+                    updated_at TIMESTAMP NULL
+                );
+                """;
+
+        String ensureExistsQueryPostgres = """
+                CREATE TABLE IF NOT EXISTS public.chats (
+                	id serial4 NOT NULL,
+                	uid uuid DEFAULT gen_random_uuid() NULL,
+                	"name" text NOT NULL,
+                	"content" text NULL,
+                	tags text NULL,
+                	created_at timestamp DEFAULT now() NULL,
+                	updated_at timestamp NULL,
+                	CONSTRAINT chats_pkey PRIMARY KEY (id)
+                );
+                """;
+
+        String ensureQuery = databaseEngine.equals("sqlite") ? ensureExistsQuerySqlite : ensureExistsQueryPostgres;
+
+        PreparedStatement statement = conn.prepareStatement(ensureQuery);
+        statement.execute();
     }
 
     @Override
