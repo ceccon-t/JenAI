@@ -20,7 +20,8 @@ public class CompositeStorage implements Storage {
             } catch (IOException e) {
             }
         }
-        throw new IOException("Could not find chat " + fileIdentifier);
+        System.out.println("Could not find chat " + fileIdentifier);
+        return null;
     }
 
     @Override
