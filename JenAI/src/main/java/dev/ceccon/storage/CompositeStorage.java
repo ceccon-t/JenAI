@@ -8,10 +8,17 @@ import java.util.List;
 
 public class CompositeStorage implements Storage {
 
+    private static final String NO_STORAGE_CONFIGURED_MESSAGE = "No storage configured! Running without persistence (no load or save command allowed)...";
+
     public List<Storage> storages = new ArrayList<>();
 
     @Override
     public Chat load(String fileIdentifier) throws IOException {
+        if (storages.isEmpty()) {
+            System.out.println(NO_STORAGE_CONFIGURED_MESSAGE);
+            return null;
+        }
+
         Chat chat;
         for (Storage storage : storages) {
             try {
@@ -26,6 +33,11 @@ public class CompositeStorage implements Storage {
 
     @Override
     public void save(Chat chat, String chosenIdentifier) throws IOException {
+        if (storages.isEmpty()) {
+            System.out.println(NO_STORAGE_CONFIGURED_MESSAGE);
+            return;
+        }
+
         for (Storage storage : storages) {
             storage.save(chat, chosenIdentifier);
         }
