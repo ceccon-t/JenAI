@@ -64,7 +64,9 @@ public class JenAI {
             apiConfig.setTemperature(temperature);
         }
 
-        storage.addStorage(new LocalFileStorage());
+        if (!jenAIArgs.hasLocalStorageEnabled() || jenAIArgs.getLocalStorageEnabled() == true) {
+            storage.addStorage(new LocalFileStorage());
+        }
         if (jenAIArgs.hasDatabaseEnabled()) {
             String dbEngine = jenAIArgs.hasDatabaseEngine() ? jenAIArgs.getDatabaseEngine() : "sqlite";
             String port = jenAIArgs.hasDatabasePort() ? jenAIArgs.getDatabasePort() : "";
@@ -130,6 +132,14 @@ public class JenAI {
         private Double temperature;
 
         @Parameter(
+                names = {"-l", "--localStorageEnabled"},
+                description = "Enable using local filesystem for persistence",
+                required = false,
+                arity = 1
+        )
+        private Boolean localStorageEnabled;
+
+        @Parameter(
                 names = {"-d", "--databaseEnabled"},
                 description = "Enable using database for persistence (file saving is not impacted)",
                 required = false,
@@ -189,6 +199,8 @@ public class JenAI {
             return temperature;
         }
 
+        public Boolean getLocalStorageEnabled() { return localStorageEnabled; }
+
         public Boolean getDatabaseEnabled() {
             return databaseEnabled;
         }
@@ -226,6 +238,8 @@ public class JenAI {
         public boolean hasTemperature() {
             return temperature != null;
         }
+
+        public boolean hasLocalStorageEnabled() { return localStorageEnabled != null; }
 
         public boolean hasDatabaseEnabled() {
             return databaseEnabled != null;

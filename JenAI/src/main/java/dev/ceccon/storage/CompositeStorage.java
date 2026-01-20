@@ -10,7 +10,7 @@ public class CompositeStorage implements Storage {
 
     private static final String NO_STORAGE_CONFIGURED_MESSAGE = "No storage configured! Running without persistence (no load or save command allowed)...";
 
-    public List<Storage> storages = new ArrayList<>();
+    private List<Storage> storages = new ArrayList<>();
 
     @Override
     public Chat load(String fileIdentifier) throws IOException {
@@ -46,4 +46,13 @@ public class CompositeStorage implements Storage {
     public void addStorage(Storage storage) {
         this.storages.add(storage);
     }
+
+    public boolean hasLocalStorage() {
+        return storages.stream().anyMatch(s -> s instanceof LocalFileStorage);
+    }
+
+    public boolean hasDatabaseStorage() {
+        return storages.stream().anyMatch(s -> s instanceof DatabaseStorage);
+    }
+
 }

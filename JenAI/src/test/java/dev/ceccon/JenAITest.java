@@ -3,7 +3,6 @@ package dev.ceccon;
 import dev.ceccon.config.APIConfig;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.storage.CompositeStorage;
-import dev.ceccon.storage.LocalFileStorage;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -198,6 +197,60 @@ class JenAITest {
         double temperatureOnApiConfig = apiConfig.getTemperature();
 
         assertEquals(Double.valueOf(temperature), temperatureOnApiConfig);
+    }
+
+    @Test
+    void cliOptionLocalStorageEnabledWithoutValueThrowsException() {
+        String[] args = new String[]{"-l"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
+        });
+    }
+
+    @Test
+    void cliOptionLocalStorageWithNonBooleanValueThrowsException() {
+        String localStorageEnabled = "error";
+        String[] args = new String[]{"-l", localStorageEnabled};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
+        });
+    }
+
+    @Test
+    void cliOptionLocalStorageEnabledDefaultsToLocalStorageOnCompositeStorage() {
+        String[] args = new String[]{};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        assertTrue(compositeStorage.hasLocalStorage());
+    }
+
+    @Test
+    void cliOptionLocalStorageEnabledWithTrueCausesLocalStorageOnCompositeStorage() {
+        String localStorageEnabled = "true";
+        String[] args = new String[]{"-l", localStorageEnabled};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        assertTrue(compositeStorage.hasLocalStorage());
+    }
+
+    @Test
+    void cliOptionLocalStorageEnabledWithFalseCausesNoLocalStorageOnCompositeStorage() {
+        String localStorageEnabled = "false";
+        String[] args = new String[]{"-l", localStorageEnabled};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        assertFalse(compositeStorage.hasLocalStorage());
     }
 
     @Test
