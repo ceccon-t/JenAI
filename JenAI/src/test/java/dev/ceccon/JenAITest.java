@@ -254,6 +254,60 @@ class JenAITest {
     }
 
     @Test
+    void cliOptionDatabaseEnabledWithoutValueThrowsException() {
+        String[] args = new String[]{"-d"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
+        });
+    }
+
+    @Test
+    void cliOptionDatabaseWithNonBooleanValueThrowsException() {
+        String databaseEnabled = "error";
+        String[] args = new String[]{"-d", databaseEnabled};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
+        });
+    }
+
+    @Test
+    void cliOptionDatabaseEnabledDefaultsToNoDatabaseStorageOnCompositeStorage() {
+        String[] args = new String[]{};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        assertFalse(compositeStorage.hasDatabaseStorage());
+    }
+
+    @Test
+    void cliOptionDatabaseEnabledWithTrueCausesDatabaseStorageOnCompositeStorage() {
+        String databaseEnabled = "true";
+        String[] args = new String[]{"-d", databaseEnabled};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        assertTrue(compositeStorage.hasDatabaseStorage());
+    }
+
+    @Test
+    void cliOptionDatabaseEnabledWithFalseCausesNoDatabaseStorageOnCompositeStorage() {
+        String databaseEnabled = "false";
+        String[] args = new String[]{"-d", databaseEnabled};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        assertFalse(compositeStorage.hasDatabaseStorage());
+    }
+
+    @Test
     void cliOptionInexistentThrowsException() {
         String[] args = new String[]{"-thisisnotanoption"};
 

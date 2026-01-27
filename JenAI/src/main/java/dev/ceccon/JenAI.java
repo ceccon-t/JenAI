@@ -67,7 +67,7 @@ public class JenAI {
         if (!jenAIArgs.hasLocalStorageEnabled() || jenAIArgs.getLocalStorageEnabled() == true) {
             storage.addStorage(new LocalFileStorage());
         }
-        if (jenAIArgs.hasDatabaseEnabled()) {
+        if (jenAIArgs.hasDatabaseEnabled() && jenAIArgs.getDatabaseEnabled()) {
             String dbEngine = jenAIArgs.hasDatabaseEngine() ? jenAIArgs.getDatabaseEngine() : "sqlite";
             String port = jenAIArgs.hasDatabasePort() ? jenAIArgs.getDatabasePort() : "";
             String username = jenAIArgs.hasDatabaseUsername() ? jenAIArgs.getDatabaseUsername() : "";
