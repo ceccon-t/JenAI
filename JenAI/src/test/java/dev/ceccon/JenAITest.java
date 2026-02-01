@@ -3,6 +3,8 @@ package dev.ceccon;
 import dev.ceccon.config.APIConfig;
 import dev.ceccon.conversation.Chat;
 import dev.ceccon.storage.CompositeStorage;
+import dev.ceccon.storage.DatabaseStorage;
+import dev.ceccon.storage.Storage;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -305,6 +307,149 @@ class JenAITest {
         JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
 
         assertFalse(compositeStorage.hasDatabaseStorage());
+    }
+
+    @Test
+    void cliOptionDatabaseEngineWithoutValueThrowsException() {
+        String[] args = new String[]{"-e"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
+        });
+    }
+
+    private DatabaseStorage getDatabaseStorage(CompositeStorage compositeStorage) {
+        for (Storage s : compositeStorage.getStorages()) {
+            if (s instanceof DatabaseStorage) return (DatabaseStorage) s;
+        }
+        return null;
+    }
+
+    @Test
+    void cliOptionDatabaseEngineDefaultsToSqlite() {
+        String[] args = new String[]{"-d", "true"};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        DatabaseStorage dbStorage = getDatabaseStorage(compositeStorage);
+        assertEquals("sqlite", dbStorage.getDatabaseEngine());
+    }
+
+    @Test
+    void cliOptionDatabaseEngineSetsEngineOnDatabaseStorage() {
+        String engine = "postgres";
+        String[] args = new String[]{"-d", "true", "-e", engine};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        DatabaseStorage dbStorage =getDatabaseStorage(compositeStorage);
+        assertEquals(engine, dbStorage.getDatabaseEngine());
+    }
+
+    @Test
+    void cliOptionDatabasePortWithoutValueThrowsException() {
+        String[] args = new String[]{"-r"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
+        });
+    }
+
+    @Test
+    void cliOptionDatabasePortDefaultsToBlank() {
+        String[] args = new String[]{"-d", "true"};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        DatabaseStorage dbStorage = getDatabaseStorage(compositeStorage);
+        assertEquals("", dbStorage.getPort());
+    }
+
+    @Test
+    void cliOptionDatabasePortSetsPortOnDatabaseStorage() {
+        String port = "1234";
+        String[] args = new String[]{"-d", "true", "-r", port};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        DatabaseStorage dbStorage =getDatabaseStorage(compositeStorage);
+        assertEquals(port, dbStorage.getPort());
+    }
+
+    @Test
+    void cliOptionDatabaseUsernameWithoutValueThrowsException() {
+        String[] args = new String[]{"-u"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
+        });
+    }
+
+    @Test
+    void cliOptionDatabaseUsernameDefaultsToBlank() {
+        String[] args = new String[]{"-d", "true"};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        DatabaseStorage dbStorage = getDatabaseStorage(compositeStorage);
+        assertEquals("", dbStorage.getUsername());
+    }
+
+    @Test
+    void cliOptionDatabaseUsernameSetsUsernameOnDatabaseStorage() {
+        String username = "user";
+        String[] args = new String[]{"-d", "true", "-u", username};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        DatabaseStorage dbStorage =getDatabaseStorage(compositeStorage);
+        assertEquals(username, dbStorage.getUsername());
+    }
+
+    @Test
+    void cliOptionDatabasePasswordWithoutValueThrowsException() {
+        String[] args = new String[]{"-w"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            JenAI.parseArguments(args, new APIConfig(), new Chat(), new CompositeStorage());
+        });
+    }
+
+    @Test
+    void cliOptionDatabasePasswordDefaultsToBlank() {
+        String[] args = new String[]{"-d", "true"};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        DatabaseStorage dbStorage = getDatabaseStorage(compositeStorage);
+        assertEquals("", dbStorage.getPassword());
+    }
+
+    @Test
+    void cliOptionDatabasePasswordSetsPasswordOnDatabaseStorage() {
+        String password = "pass";
+        String[] args = new String[]{"-d", "true", "-w", password};
+
+        CompositeStorage compositeStorage = new CompositeStorage();
+
+        JenAI.parseArguments(args, new APIConfig(), new Chat(), compositeStorage);
+
+        DatabaseStorage dbStorage =getDatabaseStorage(compositeStorage);
+        assertEquals(password, dbStorage.getPassword());
     }
 
     @Test

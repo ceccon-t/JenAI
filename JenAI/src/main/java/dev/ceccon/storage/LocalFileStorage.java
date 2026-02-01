@@ -18,6 +18,11 @@ public class LocalFileStorage implements Storage{
     private String baseFolder = "./jenai_chats/";
     private ObjectMapper mapper = new ObjectMapper();
 
+    @Override
+    public Storage clone() {
+        return new LocalFileStorage();
+    }
+
     private String getBaseFolder() {
         return this.baseFolder;
     }

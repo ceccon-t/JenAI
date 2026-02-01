@@ -41,6 +41,11 @@ public class DatabaseStorage implements Storage {
         this("", "", "", "", "");
     }
 
+    @Override
+    public Storage clone() {
+        return new DatabaseStorage(databaseEngine, port, username, password, databaseName);
+    }
+
     private Connection getConnection() throws SQLException {
         String url;
 
@@ -150,6 +155,22 @@ public class DatabaseStorage implements Storage {
             System.out.println("Error while trying to save chat '" + chosenIdentifier + "': " + e);
             e.printStackTrace();
         }
+    }
+
+    public String getDatabaseEngine() {
+        return databaseEngine;
+    }
+
+    public void setDatabaseEngine(String databaseEngine) {
+        this.databaseEngine = databaseEngine;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
     }
 
     public String getUsername() {
