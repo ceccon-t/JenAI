@@ -14,7 +14,7 @@ Just type your message when prompted and press Enter to send it.
 
 The application manages the conversation as a chat between the user (you) and the assistant (the LLM model), so any new message you send will be answered considering the context of the previous messages, up until the context size limit of the model being used. Once the limit is exceeded, the model will start losing the memory of the earliest messages in the conversation (it will probably still hallucinate answers about it if you ask).
 
-You can save the conversation to disk by entering `(save)` as a message. This will create two files, one in plain text and one in json format, to a `jenai_chats` folder on the current working directory - if the folder does not exist, it will be created. When saving you can specify a custom filename to be used with `(save) <filename>`, otherwise the filename defaults to `JenAI_chat_` with the date and hour as suffix.
+You can save the conversation to disk by entering `(save)` as a message. When local storage is enabled (default behavior), this will create two files, one in plain text and one in json format, to a `jenai_chats` folder on the current working directory - if the folder does not exist, it will be created. When saving you can specify a custom filename to be used with `(save) <filename>`, otherwise the filename defaults to `JenAI_chat_` with the date and hour as suffix. If database is enabled, a new entry will be added to the `chats` table, with the chosen filename as title. Both local and database storage are configured independently, allowing for any combination of them being active in each session.
 
 To exit the conversation, simply type `(exit)` as your next message and send it.
 
@@ -32,7 +32,7 @@ Example with llm server running on default port (8080):
 
 `$ java -jar JenAI.jar`
 
-Example using a custom port (8888, in this case):
+Example using a custom port for the LLM server (8888, in this case):
 
 `$ java -jar JenAI.jar -p 8888`
 
@@ -68,6 +68,18 @@ Here is the list of command-line options available when starting the application
 - `-s <true|false>`: Specify if should run in streaming response mode or block response mode. Streaming response offers quicker feedback and a more familiar experience to those used to working with LLMs, but does not provide the metrics about token usage. Block response only returns any feedback after the model has finished producing the answer, but provides metrics about token usage. Deafults to true.
 
 - `-t <temperature>`: Specify the temperature to be used when generating an answer, the larger the temperature the more randomness it includes. <temperature> must be a decimal number, and usually fits in the [0.0-1.0) range. Make sure to use a dot (`.`) and not a comma to separate the parts of the number. Defaults to 0.0.
+
+- `-l <true|false>`: Enables or disables local filesystem storage (saving/loading conversations to/from files). Defaults to true.
+
+- `-d <true|false>`: Enables or disables local database storage (saving/loading conversations from a local database). If set to true, by default will use a sqlite database, which storages the data in a `jenai.db` file on the same folder as the local filesystem configuration would - using a different database engine requires further configuration to be passed (such as database port, username and password). Defaults to false.
+
+- `-e <sqlite|postgres>`: Defines the database engine to be used, currently only sqlite and postgres are supported. Sqlite does not require any further configuration, while postgres requires you to have a running instance of Postgresql in your local machine, and you must also inform the port, username and password to connect to it. Defaults to sqlite.
+
+- `-r <database_port>`: Defines the port on which the local database is listening, in your machine. Only useful when database is enabled and engine is `postgres` (in which case you must use this option) - otherwise this is ignored. Defaults to a blank string.
+
+- `-u <database_username>`: Defines the username to connect to the local database. Only useful when database is enabled and engine is `postgres` (in which case you must use this option) - otherwise this is ignored. Defaults to a blank string.
+
+- `-p <database_password>`: Defines the password to connect to the local database. Only useful when database is enabled and engine is `postgres` (in which case you must use this option) - otherwise this is ignored. Defaults to a blank string.
 
 These options are independent of each other, and can be combined as desired and in any order. Examples of using some of them can be found in section "How to run" of readme.
 

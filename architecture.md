@@ -18,7 +18,7 @@ The main folder of the project is named `JenAI`, and it is present at the root o
 
 The main class of the application is also the only one at the root package, `JenAI`. It processes the options used when starting the application, create the appropriate configurations and launches a new `CLISession` with these configurations.
 
-The big picture view is that there are four main responsibilities in the project: keeping the history of a conversation, managing a session with the user, communicating with an LLM server through its API and handling the persistance of conversation states to disk. Each one of these is handled in a particular package, while a few other subpackages handle helper utilities.
+The big picture view is that there are four main responsibilities in the project: keeping the history of a conversation, managing a session with the user, communicating with an LLM server through its API and handling the persistance of conversation states (either to disk or to a database). Each one of these is handled in a particular package, while a few other subpackages handle helper utilities.
 
 The most relevant packages are described below.
 
@@ -48,7 +48,9 @@ Classes that model the two types of responses that application works with: block
 
 ### Storage
 
-Helper classes to handle saving and loading conversations.
+Helper classes to handle saving and loading conversations. In order to allow for both saving conversations to files in the local filesystem and to a database, the main class used is `CompositeStorage`, which acts just as an aggregator that is populated at startup with the classes for the desired behaviors and then propagate all calls to every object it contains. The specific persistence logic is handled by `LocalFileStorage` and `DatabaseStorage` classes. At startup the CLI options informed are parsed and for each of the behaviors requested the respective class has an object instantiated and added to the composite storage, ensuring it is then available during the session.
+
+The interface `Storage` allows for all types of storage being used with a consistent API, so that the rest of the code usually does not have to worry about which type of storage is being used at any particular time. Variables for classes under this package should favor using this interface for their type, whenever possible.
 
 ## Automated Tests
 
